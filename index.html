@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title id="pageTitle">KK Texmart | Luxury Fashion & Lifestyle BD</title>
+  <meta name="description" content="Shop premium quality men's fashion, stylish shirts, exclusive panjabis, polo t-shirts, jackets, and trendy lifestyle apparel at KK Texmart Bangladesh.">
+  <meta name="keywords" content="KK Texmart, kktexmart, premium panjabi, casual shirts bd, online shopping bd">
+  <meta name="author" content="KK Texmart">
+  <link rel="canonical" href="https://www.kktexmart.com/">
+
+  <link id="pageFavicon" rel="icon" type="image/jpeg" sizes="192x192" href="https://res.cloudinary.com/dwgvvzbvn/image/upload/v1790933307/fbvhveeektcotj2yg5gi.jpg">
+  <link rel="apple-touch-icon" href="https://res.cloudinary.com/dwgvvzbvn/image/upload/v1790933307/fbvhveeektcotj2yg5gi.jpg">
+  <link rel="shortcut icon" href="https://res.cloudinary.com/dwgvvzbvn/image/upload/v1790933307/fbvhveeektcotj2yg5gi.jpg" type="image/jpeg">
+
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow">
+  <meta name="geo.region" content="BD-13">
+  <meta name="geo.placename" content="Dhaka, Bangladesh">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.kktexmart.com/">
+  <meta property="og:site_name" content="KK Texmart">
+  <meta property="og:locale" content="bn_BD">
+  <meta id="ogTitle" property="og:title" content="KK Texmart | Luxury Fashion & Lifestyle BD">
+  <meta id="ogDescription" property="og:description" content="Discover premium men's fashion, exclusive combo deals, shirts, panjabis, polo t-shirts and trendy outfits in Bangladesh.">
+  <meta id="ogImage" property="og:image" content="https://res.cloudinary.com/dwgvvzbvn/image/upload/v1790933307/fbvhveeektcotj2yg5gi.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="KK Texmart Luxury Fashion">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="KK Texmart | Luxury Fashion & Lifestyle BD">
+  <meta name="twitter:description" content="Shop premium men's shirts, panjabi and trendy lifestyle apparel online in Bangladesh.">
+  <meta name="twitter:image" content="https://res.cloudinary.com/dwgvvzbvn/image/upload/v1790933307/fbvhveeektcotj2yg5gi.jpg">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ClothingStore",
+    "name": "KK Texmart",
+    "image": "https://res.cloudinary.com/dwgvvzbvn/image/upload/v1790933307/fbvhveeektcotj2yg5gi.jpg",
+    "@id": "https://www.kktexmart.com/",
+    "url": "https://www.kktexmart.com/",
+    "telephone": "+8801833800761",
+    "email": "kktexmart@gmail.com",
+    "priceRange": "BDT",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Mirpur Section 1",
+      "addressLocality": "Dhaka",
+      "postalCode": "1216",
+      "addressCountry": "BD"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 23.8067,
+      "longitude": 90.3547
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "09:00",
+      "closes": "23:00"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+  <link rel="preconnect" href="https://kk-texmart-default-rtdb.asia-southeast1.firebasedatabase.app" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Cinzel"', 'serif'],
+          },
+          colors: {
+            brand: {
+              900: '#0F172A',
+              800: '#1E293B',
+              accent: '#9B5A4B',
+              border: '#E2E8F0',
+              bgLight: '#F8FAFC'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FFFFFF !important;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(247, 241, 227, 0.65) 0px, transparent 45%),
+        radial-gradient(at 100% 0%, rgba(236, 246, 240, 0.6) 0px, transparent 40%),
+        radial-gradient(at 50% 100%, rgba(250, 245, 235, 0.5) 0px, transparent 50%),
+        linear-gradient(180deg, #FFFFFF 0%, #FAFAF8 100%) !important;
+      background-attachment: fixed;
+      color: #0F172A;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
+
+    .swiper-pagination-bullet {
+      width: 7px;
+      height: 7px;
+      background: #FFFFFF !important;
+      opacity: 0.5 !important;
+      transition: all 0.3s ease;
+    }
+    .swiper-pagination-bullet-active {
+      opacity: 1 !important;
+      width: 22px !important;
+      border-radius: 9999px;
+      background: #FFFFFF !important;
+    }
+
+    .myNewArrivalsSwiper, .customColSwiper {
+      padding: 16px 0 24px 0 !important;
+      overflow: hidden;
+    }
+    .myNewArrivalsSwiper .swiper-slide, .customColSwiper .swiper-slide {
+      transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.45s ease;
+      transform: scale(0.85);
+      opacity: 0.5;
+    }
+    .myNewArrivalsSwiper .swiper-slide-active, .customColSwiper .swiper-slide-active {
+      transform: scale(1.06);
+      opacity: 1;
+      z-index: 25;
+    }
+
+    .skeleton-shimmer {
+      background: linear-gradient(90deg, #f8f9fa 25%, #e9ecef 50%, #f8f9fa 75%);
+      background-size: 200% 100%;
+      animation: shimmerAnimation 1.4s infinite;
+    }
+    @keyframes shimmerAnimation {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-wrapper {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 25s linear infinite;
+    }
+    .marquee-wrapper:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes rotateBorderRing {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Floating In-Banner Reels Widgets */
+    .hero-reel-widget {
+      position: absolute;
+      bottom: 16px;
+      z-index: 30;
+      width: 90px;
+      height: 155px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s ease;
+      touch-action: pan-y;
+      overflow: hidden;
+      background: #000;
+    }
+    @media (min-width: 640px) {
+      .hero-reel-widget {
+        width: 120px;
+        height: 205px;
+        border-radius: 18px;
+        bottom: 22px;
+      }
+    }
+    .hero-reel-left { left: 14px; }
+    .hero-reel-right { right: 14px; }
+    @media (min-width: 640px) {
+      .hero-reel-left { left: 32px; }
+      .hero-reel-right { right: 32px; }
+    }
+
+    .hero-reel-widget.reel-pip {
+      position: fixed !important;
+      bottom: 80px !important;
+      z-index: 99 !important;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5), 0 0 15px rgba(212, 175, 55, 0.35);
+      border: 1.5px solid #D4AF37;
+      animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn {
+      from { transform: scale(0.7) translateY(40px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    @media (min-width: 768px) {
+      .hero-reel-widget.reel-pip {
+        bottom: 24px !important;
+      }
+    }
+    .reel-pip.hero-reel-left { left: 14px !important; }
+    .reel-pip.hero-reel-right { right: 14px !important; }
+
+    .reel-dismissed {
+      transform: scale(0.3) translateY(80px) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    #fullscreenReelsModal {
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+    }
+    #fullscreenReelsModal.active {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+    #fullscreenReelsModal .reels-card-zoom {
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+      transform: scale(0.92);
+    }
+    #fullscreenReelsModal.active .reels-card-zoom {
+      transform: scale(1);
+    }
+    .shop-now-spin-btn {
+      position: relative;
+      padding: 2px;
+      border-radius: 9999px;
+      display: inline-flex;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+    }
+    .shop-now-spin-btn::before {
+      content: '';
+      position: absolute;
+      inset: -150%;
+      background: conic-gradient(from 0deg, transparent 0deg, #D4AF37 90deg, #9B5A4B 180deg, #D4AF37 270deg, transparent 360deg);
+      animation: rotateBorderRing 3s linear infinite;
+    }
+    .shop-now-spin-btn > div {
+      position: relative;
+      z-index: 10;
+      background: #0F172A;
+      color: #FFFFFF;
+      border-radius: 9999px;
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+  </style>
+
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '3753355204924726');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=3753355204924726&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+</head>
+<body class="antialiased selection:bg-black selection:text-white">
+
+  <div id="storeToastContainer" class="fixed top-5 right-5 z-[99999] flex flex-col gap-2 pointer-events-none"></div>
+
+  <div id="announcementBar" class="hidden bg-slate-950 text-white text-[11px] sm:text-xs py-2 px-4 text-center font-medium tracking-widest uppercase flex items-center justify-center border-b border-slate-800">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span id="announcementText" class="tracking-wider">সারা দেশে ক্যাশ অন ডেলিভারি সুবিধা</span>
+    </div>
+  </div>
+
+  <header class="bg-gradient-to-r from-[#F0F7FD]/95 via-white/95 to-[#F0F7FD]/95 backdrop-blur-md border-b border-[#E0EEFA] sticky top-0 z-40 transition-all duration-300 shadow-[0_2px_10px_rgba(186,230,253,0.12)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+      
+      <button onclick="toggleMenu()" aria-label="Open Navigation" class="w-10 h-10 -ml-2 text-slate-800 flex items-center justify-center transition active:scale-90">
+        <i data-lucide="menu" class="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.6]"></i>
+      </button>
+
+      <a href="javascript:void(0)" onclick="navigateTo('home')" class="flex items-center gap-2 sm:gap-2.5 py-1 group">
+        <img 
+          src="https://res.cloudinary.com/dwgvvzbvn/image/upload/v1790933307/fbvhveeektcotj2yg5gi.jpg" 
+          alt="KK Texmart" 
+          class="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover ring-1 ring-[#D4AF37]/50 shadow-2xs"
+        >
+        <span class="w-[1px] h-3.5 bg-[#D4AF37]/50 mx-0.5"></span>
+        <span id="headerBrandTitle" class="font-display text-[13px] sm:text-[15px] font-extrabold tracking-[0.22em] text-slate-900 uppercase store-name-text group-hover:text-[#9B5A4B] transition-colors">
+          KK TEXMART
+        </span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-6">
+        <a href="javascript:void(0)" onclick="navigateTo('home')" class="text-xs font-bold uppercase tracking-widest text-slate-800 hover:text-[#9B5A4B] transition">Home</a>
+        <a href="javascript:void(0)" onclick="navigateTo('catalog', 'All Products')" class="text-xs font-bold uppercase tracking-widest text-slate-800 hover:text-[#9B5A4B] transition">All Products</a>
+        <a href="javascript:void(0)" onclick="navigateTo('combos')" class="text-xs font-bold uppercase tracking-widest text-[#9B5A4B] hover:text-black transition">Combos</a>
+        <a href="javascript:void(0)" onclick="navigateTo('collections')" class="text-xs font-bold uppercase tracking-widest text-slate-800 hover:text-[#9B5A4B] transition">Collections</a>
+        <a href="javascript:void(0)" onclick="openTrackOrderModal()" class="text-xs font-bold uppercase tracking-widest text-slate-800 hover:text-[#9B5A4B] transition">Track Order</a>
+      </nav>
+
+      <div class="flex items-center gap-0.5 sm:gap-1">
+        <button onclick="navigateTo('search')" aria-label="Search" class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-slate-800 transition active:scale-90">
+          <i data-lucide="search" class="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.6]"></i>
+        </button>
+
+        <a id="headerCartLink" href="cart.html" aria-label="Cart" class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-slate-800 transition relative active:scale-90">
+          <i data-lucide="shopping-bag" class="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.6]"></i>
+          <span id="headerCartBadge" class="absolute top-1 right-1 min-w-[15px] h-[15px] bg-[#9B5A4B] text-white text-[8px] font-bold rounded-full flex items-center justify-center px-1">0</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <div id="sideMenuBackdrop" onclick="toggleMenu()" class="fixed inset-0 bg-slate-950/60 z-[60] opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm"></div>
+  
+  <aside id="sideMenu" class="fixed top-0 left-0 bottom-0 h-full w-[85%] max-w-xs sm:max-w-sm bg-[#FAF9F6] z-[70] shadow-2xl transform -translate-x-full transition-transform duration-300 ease-out flex flex-col justify-between overflow-hidden border-r border-[#EFE8DC]">
+    
+    <div class="px-5 py-4 sm:px-6 sm:py-5 border-b border-[#EFE8DC] bg-white flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-2.5">
+        <img src="https://res.cloudinary.com/dwgvvzbvn/image/upload/v1790933307/fbvhveeektcotj2yg5gi.jpg" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover ring-1 ring-[#D4AF37]/50 shadow-xs">
+        <span class="font-display font-extrabold text-slate-900 tracking-[0.2em] uppercase text-xs sm:text-sm store-name-text">KK TEXMART</span>
+      </div>
+      <button onclick="closeMenu()" aria-label="Close" class="w-8 h-8 rounded-full bg-slate-100/80 hover:bg-slate-200 flex items-center justify-center text-slate-700 hover:text-black transition">
+        <i data-lucide="x" class="w-4 h-4 stroke-[2]"></i>
+      </button>
+    </div>
+
+    <div class="px-5 py-5 space-y-6 flex-1 overflow-y-auto custom-scroll">
+      <div class="space-y-1">
+        <p class="text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#9C792E] mb-2 px-2 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
+          Menu
+        </p>
+
+        <a href="javascript:void(0)" onclick="navigateTo('home')" class="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-900 hover:bg-white hover:text-[#9B5A4B] transition group">
+          <div class="flex items-center gap-3">
+            <i data-lucide="home" class="w-4 h-4 text-slate-500 group-hover:text-[#9B5A4B] transition"></i>
+            <span class="text-xs font-bold tracking-wider uppercase">Home</span>
+          </div>
+          <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-700 transition"></i>
+        </a>
+
+        <a href="javascript:void(0)" onclick="navigateTo('catalog', 'All Products')" class="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-900 hover:bg-white hover:text-[#9B5A4B] transition group">
+          <div class="flex items-center gap-3">
+            <i data-lucide="layout-grid" class="w-4 h-4 text-slate-500 group-hover:text-[#9B5A4B] transition"></i>
+            <span class="text-xs font-bold tracking-wider uppercase">All Products</span>
+          </div>
+          <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-700 transition"></i>
+        </a>
+
+        <a href="javascript:void(0)" onclick="navigateTo('catalog', 'Free Delivery')" class="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-900 hover:bg-white hover:text-[#9B5A4B] transition group">
+          <div class="flex items-center gap-3">
+            <i data-lucide="sparkles" class="w-4 h-4 text-[#D4AF37]"></i>
+            <span class="text-xs font-bold tracking-wider uppercase text-slate-900">Free Delivery</span>
+          </div>
+          <span class="text-[9px] font-extrabold bg-[#D4AF37]/20 text-[#9C792E] px-2 py-0.5 rounded-full uppercase tracking-wider">0 TK</span>
+        </a>
+
+        <a href="javascript:void(0)" onclick="navigateTo('combos')" class="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-900 hover:bg-white hover:text-[#9B5A4B] transition group">
+          <div class="flex items-center gap-3">
+            <i data-lucide="gift" class="w-4 h-4 text-[#9B5A4B]"></i>
+            <span class="text-xs font-bold tracking-wider uppercase text-[#9B5A4B]">Exclusive Combos</span>
+          </div>
+          <span class="text-[9px] font-extrabold bg-[#9B5A4B]/10 text-[#9B5A4B] px-2 py-0.5 rounded-full uppercase tracking-wider">Save</span>
+        </a>
+
+        <a href="javascript:void(0)" onclick="openTrackOrderModal(); closeMenu();" class="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-900 hover:bg-white hover:text-[#9B5A4B] transition group">
+          <div class="flex items-center gap-3">
+            <i data-lucide="truck" class="w-4 h-4 text-slate-500 group-hover:text-[#9B5A4B] transition"></i>
+            <span class="text-xs font-bold tracking-wider uppercase">Track Order</span>
+          </div>
+          <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-700 transition"></i>
+        </a>
+      </div>
+
+      <div class="pt-4 border-t border-[#EFE8DC]">
+        <p class="text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#9C792E] mb-2 px-2 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
+          Collections
+        </p>
+        <div id="drawerCategories" class="space-y-0.5 pb-8"></div>
+      </div>
+    </div>
+  </aside>
+
+  <main id="appContent" class="min-h-screen">
+    <section id="view-home" class="spa-view block">
+      <h1 class="sr-only">KK Texmart - Premium Men's Fashion, Panjabi, Shirts & Lifestyle Brand in Bangladesh</h1>
+
+      <div id="banner-sec" class="w-full max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 pt-0 sm:pt-3 relative">
+        <div class="swiper myHeroSwiper w-full aspect-[16/9] sm:rounded-2xl overflow-hidden bg-white border-y sm:border border-[#EFE8DC] relative shadow-xs">
+          <div class="swiper-wrapper" id="bannerSliderWrapper">
+            <div class="swiper-slide w-full h-full flex items-center justify-center bg-white skeleton-shimmer">
+              <div class="w-9 h-9 rounded-full border-2 border-[#D4AF37] border-t-transparent animate-spin opacity-40"></div>
+            </div>
+          </div>
+          <div class="swiper-pagination !bottom-2.5 sm:!bottom-4"></div>
+        </div>
+
+        <!-- ব্যানার এর উপর ভাসমান ২ কর্নার রিলস কন্টেইনার -->
+        <div id="reelsDualContainer"></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 pt-4 pb-2">
+        <div class="relative w-full overflow-hidden bg-white/70 backdrop-blur-sm border border-[#EFE8DC] rounded-xl py-2 shadow-2xs">
+          <div class="absolute left-0 inset-y-0 w-8 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+          <div class="absolute right-0 inset-y-0 w-8 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+          
+          <div class="marquee-wrapper items-center gap-6" id="quickPillsBar">
+            <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Loading Collections...</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="collections-sec" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-4">
+        <div class="flex items-center justify-center gap-3 sm:gap-5 mb-5 sm:mb-7">
+          <div class="flex-1 h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-[#D4AF37]"></div>
+          <h2 class="text-xs sm:text-sm md:text-base font-display font-bold tracking-[0.22em] text-slate-900 uppercase text-center shrink-0">
+            FEATURED COLLECTIONS
+          </h2>
+          <div class="flex-1 h-[1px] bg-gradient-to-l from-transparent via-[#D4AF37]/50 to-[#D4AF37]"></div>
+        </div>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-5" id="homeCategorySliderWrapper">
+          <div class="space-y-2">
+            <div class="skeleton-shimmer aspect-[4/4.8] rounded-2xl border border-slate-200"></div>
+            <div class="skeleton-shimmer h-9 rounded-xl border border-slate-200"></div>
+          </div>
+          <div class="space-y-2">
+            <div class="skeleton-shimmer aspect-[4/4.8] rounded-2xl border border-slate-200"></div>
+            <div class="skeleton-shimmer h-9 rounded-xl border border-slate-200"></div>
+          </div>
+          <div class="space-y-2">
+            <div class="skeleton-shimmer aspect-[4/4.8] rounded-2xl border border-slate-200"></div>
+            <div class="skeleton-shimmer h-9 rounded-xl border border-slate-200"></div>
+          </div>
+          <div class="space-y-2">
+            <div class="skeleton-shimmer aspect-[4/4.8] rounded-2xl border border-slate-200"></div>
+            <div class="skeleton-shimmer h-9 rounded-xl border border-slate-200"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CUSTOM COLLECTIONS SHOWCASE (অনুরোধকৃত নতুন ডিজাইন: শিরোনাম ছাড়া, মসৃণ প্রোডাক্ট অ্যানিমেশন ও নিচেই কালেকশনের নাম) -->
+      <div id="custom-collections-sec" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 pb-4 hidden">
+        <div id="homeCustomCollectionsContainer" class="space-y-8"></div>
+      </div>
+
+      <div id="new-arrivals-sec" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-6">
+        <div class="flex items-center justify-between mb-3 sm:mb-5 border-b border-slate-100 pb-3">
+          <h2 class="text-sm sm:text-xl font-display font-bold tracking-[0.15em] sm:tracking-[0.2em] text-[#9B5A4B] uppercase truncate">
+            NEW ARRIVAL
+          </h2>
+          <button onclick="navigateTo('catalog', 'New Arrivals')" class="shrink-0 flex items-center gap-1 text-[11px] sm:text-xs font-bold tracking-wider text-[#9B5A4B] hover:text-black uppercase transition ml-2 py-1">
+            <span>See More</span>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]"></i>
+          </button>
+        </div>
+        <div class="swiper myNewArrivalsSwiper overflow-hidden py-2">
+          <div class="swiper-wrapper" id="newArrivalsSliderWrapper">
+            <div class="swiper-slide !w-[68%] sm:!w-64">
+              <div class="skeleton-shimmer aspect-[3/4] rounded-2xl border border-slate-200"></div>
+              <div class="skeleton-shimmer h-12 rounded-xl mt-2 border border-slate-200"></div>
+            </div>
+            <div class="swiper-slide !w-[68%] sm:!w-64">
+              <div class="skeleton-shimmer aspect-[3/4] rounded-2xl border border-slate-200"></div>
+              <div class="skeleton-shimmer h-12 rounded-xl mt-2 border border-slate-200"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="homeCombosContainer" class="max-w-[1600px] mx-auto px-4 sm:px-8 pt-6 pb-6 hidden">
+        <div class="flex items-center justify-between mb-4 sm:mb-6 border-b border-slate-100 pb-3">
+          <h2 class="text-sm sm:text-xl font-display font-bold tracking-[0.15em] sm:tracking-[0.2em] text-[#9B5A4B] uppercase truncate">
+            EXCLUSIVE COMBOS
+          </h2>
+          <button onclick="navigateTo('combos')" class="shrink-0 flex items-center gap-1 text-[11px] sm:text-xs font-bold tracking-wider text-[#9B5A4B] hover:text-black uppercase transition ml-2 py-1">
+            <span>See More</span>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]"></i>
+          </button>
+        </div>
+        <div class="swiper myCombosSwiper overflow-hidden py-2">
+          <div class="swiper-wrapper" id="homeCombosSliderWrapper"></div>
+        </div>
+      </div>
+
+      <div id="dynamicSectionsContainer" class="space-y-12 pb-16"></div>
+
+      <footer class="bg-white text-slate-700 pt-16 pb-24 md:pb-12 border-t border-[#E8DFD1] shadow-[0_-4px_25px_rgba(218,187,144,0.06)] relative overflow-hidden">
+        <div class="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent"></div>
+
+        <div class="max-w-[1600px] mx-auto px-6 sm:px-8 grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-[#F0E8DD]">
+          <div class="space-y-4">
+            <div class="flex items-center gap-3">
+              <img src="https://res.cloudinary.com/dwgvvzbvn/image/upload/v1790933307/fbvhveeektcotj2yg5gi.jpg" alt="KK Texmart Official Logo" class="w-9 h-9 rounded-full object-cover ring-1 ring-[#D4AF37]/40 shadow-sm">
+              <span class="font-display tracking-[0.2em] text-lg font-bold text-slate-900 uppercase store-name-text">KK TEXMART</span>
+            </div>
+            <p id="footerStoreDesc" class="text-xs leading-relaxed text-slate-500 font-normal">
+              Elevating men’s fashion in Bangladesh with uncompromised fabric quality, precision fit, and modern aesthetics.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-xs font-bold tracking-widest text-[#9C792E] uppercase mb-4 flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
+              Quick Navigation
+            </h3>
+            <ul class="space-y-2.5 text-xs text-slate-600 font-medium">
+              <li><a href="javascript:void(0)" onclick="navigateTo('home'); scrollToSection('banner-sec')" class="hover:text-[#9C792E] transition">Home</a></li>
+              <li><a href="javascript:void(0)" onclick="navigateTo('catalog', 'All Products')" class="hover:text-[#9C792E] transition">All Products</a></li>
+              <li><a href="javascript:void(0)" onclick="navigateTo('combos')" class="hover:text-[#9C792E] transition">Combo Bundles</a></li>
+              <li><a href="javascript:void(0)" onclick="navigateTo('collections')" class="hover:text-[#9C792E] transition">Full Collections</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-xs font-bold tracking-widest text-[#9C792E] uppercase mb-4 flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
+              Customer Care
+            </h3>
+            <ul class="space-y-2.5 text-xs text-slate-600 font-medium">
+              <li><a href="javascript:void(0)" onclick="openTrackOrderModal()" class="hover:text-[#9C792E] transition">Track Your Order</a></li>
+              <li><a id="footerWaLink" href="https://wa.me/8801833800761" target="_blank" class="hover:text-[#9C792E] transition">WhatsApp Support</a></li>
+              <li><a href="mailto:kktexmart@gmail.com" class="hover:text-[#9C792E] transition">kktexmart@gmail.com</a></li>
+            </ul>
+          </div>
+
+          <div class="space-y-3 text-xs text-slate-600 font-medium">
+            <h3 class="text-xs font-bold tracking-widest text-[#9C792E] uppercase mb-4 flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
+              Store Location
+            </h3>
+            <div class="flex items-start gap-2.5">
+              <i data-lucide="map-pin" class="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5"></i>
+              <span id="footerAddress" class="text-slate-600">Mirpur Section 1, Dhaka 1216, Bangladesh</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="phone" class="w-4 h-4 text-[#D4AF37] shrink-0"></i>
+              <a id="footerPhone" href="tel:01833800761" class="text-slate-900 font-semibold hover:text-[#9C792E] hover:underline">01833800761</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="max-w-[1600px] mx-auto px-6 sm:px-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+          <div>&copy; <span id="currentYear"></span> <span class="store-name-text text-slate-700 font-semibold">KK Texmart</span>. All rights reserved.</div>
+          <a href="https://tiodisk.top" target="_blank" rel="noopener noreferrer" class="text-[#9C792E]/70 hover:text-[#9C792E] hover:underline font-medium transition-colors">Powered by tioDisk</a>
+        </div>
+      </footer>
+    </section>
+
+    <section id="view-combos" class="spa-view hidden max-w-[1600px] mx-auto px-4 sm:px-8 py-10">
+      <div class="flex items-center gap-4 mb-8 border-b border-slate-100 pb-5">
+        <button onclick="goBack()" class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-800 hover:bg-slate-100">
+          <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        </button>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-display font-bold uppercase tracking-wider text-slate-950">Combo Bundles</h1>
+          <p class="text-xs text-slate-500">Save extra with curated multi-item sets</p>
+        </div>
+      </div>
+      <div id="allCombosGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <section id="view-collections" class="spa-view hidden max-w-[1600px] mx-auto px-4 sm:px-8 py-10">
+      <div class="flex items-center gap-4 mb-8 border-b border-slate-100 pb-5">
+        <button onclick="goBack()" class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-800 hover:bg-slate-100">
+          <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        </button>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-display font-bold uppercase tracking-wider text-slate-950">All Collections</h1>
+          <p class="text-xs text-slate-500">Browse categories by fashion statement</p>
+        </div>
+      </div>
+      <div id="allCollectionsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
+    </section>
+
+    <section id="view-catalog" class="spa-view hidden max-w-[1600px] mx-auto px-4 sm:px-8 pt-6 pb-28 min-h-[85vh]">
+      <div class="flex items-center gap-4 mb-6 border-b border-slate-100 pb-4">
+        <button onclick="goBack()" class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-800 hover:bg-slate-100 transition">
+          <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        </button>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-display font-bold uppercase tracking-wider text-slate-950" id="catalogViewTitle">Catalog</h1>
+          <p class="text-xs text-slate-500" id="catalogViewSubtitle">All premium items</p>
+        </div>
+      </div>
+      <div id="catalogProductGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-6"></div>
+    </section>
+
+    <section id="view-category" class="spa-view hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 sm:pt-5 pb-28 min-h-[85vh]">
+      <div class="flex items-center justify-center gap-3 sm:gap-6 mb-4 sm:mb-5">
+        <div class="flex-1 h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-[#D4AF37]"></div>
+        <h1 id="categoryViewTitle" class="text-sm sm:text-base md:text-lg font-display font-extrabold tracking-[0.2em] sm:tracking-[0.24em] text-slate-900 uppercase text-center shrink-0">
+          CATEGORY
+        </h1>
+        <div class="flex-1 h-[1px] bg-gradient-to-l from-transparent via-[#D4AF37]/50 to-[#D4AF37]"></div>
+      </div>
+
+      <div class="flex items-center justify-between pb-3 mb-5 border-b border-[#EAE2D5]">
+        <div class="relative inline-flex items-center">
+          <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-[#9B5A4B] absolute left-3 pointer-events-none"></i>
+          <select id="categorySortSelect" onchange="applyCategorySort()" class="bg-white border border-[#E2E8F0] hover:border-slate-400 text-slate-800 text-[11px] sm:text-xs font-semibold rounded-full pl-8 pr-7 py-1.5 outline-none cursor-pointer appearance-none shadow-2xs transition">
+            <option value="default">Sort by: Default</option>
+            <option value="price-desc">Price: High To Low</option>
+            <option value="price-asc">Price: Low To High</option>
+          </select>
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 absolute right-2.5 pointer-events-none"></i>
+        </div>
+
+        <div id="categoryViewSubtitle" class="text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider">
+          0 Items Available
+        </div>
+      </div>
+
+      <div id="categoryProductGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-6"></div>
+    </section>
+
+    <section id="view-search" class="spa-view hidden max-w-[1600px] mx-auto px-4 sm:px-8 pt-6 pb-28 min-h-[85vh]">
+      <div class="flex items-center gap-4 mb-8 border-b border-slate-100 pb-5">
+        <button onclick="goBack()" class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-800 hover:bg-slate-100 shrink-0">
+          <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        </button>
+        <div class="relative flex-1 max-w-xl">
+          <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search shirts, panjabi, jackets, combos..." 
+            oninput="handleSearchInput(event)"
+            class="w-full bg-slate-50 border border-slate-200 focus:border-slate-900 focus:bg-white text-slate-900 rounded-full py-3 pl-12 pr-12 text-sm outline-none transition"
+            autocomplete="off"
+          >
+          <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-black">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between mb-6 px-1">
+        <h3 class="text-xs uppercase font-bold tracking-wider text-slate-500" id="searchResultSummary">All Products</h3>
+        <span class="text-xs text-slate-950 font-bold" id="searchResultCount">0 items</span>
+      </div>
+
+      <div id="searchProductGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6"></div>
+    </section>
+  </main>
+
+  <!-- Fullscreen Luxury Reel Story Modal -->
+  <div id="fullscreenReelsModal" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl opacity-0 invisible pointer-events-none flex items-center justify-center p-0 sm:p-4 select-none">
+    <div class="absolute top-0 inset-x-0 p-4 flex items-center justify-between z-30 bg-gradient-to-b from-black/80 to-transparent">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+        <span class="text-xs font-serif tracking-widest text-[#D4AF37] font-bold uppercase">KK TEXMART MOTION</span>
+      </div>
+      <button onclick="closeFullscreenReel()" aria-label="Close Reel" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center backdrop-blur-md transition active:scale-95">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div class="reels-card-zoom relative w-full h-full sm:h-[88vh] sm:max-w-md sm:rounded-3xl overflow-hidden bg-black flex items-center justify-center shadow-2xl border border-white/10">
+      <video id="fsReelVideo" class="w-full h-full object-cover" loop playsinline autoplay onclick="toggleFsAudio()"></video>
+
+      <button onclick="toggleFsAudio()" id="fsAudioBtn" class="absolute bottom-6 right-5 w-11 h-11 rounded-full bg-black/60 backdrop-blur-md border border-[#D4AF37]/60 text-white flex items-center justify-center transition active:scale-90 z-20">
+        <i data-lucide="volume-2" class="w-5 h-5 text-[#D4AF37]" id="fsAudioIcon"></i>
+      </button>
+
+      <button onclick="navigateReel(-1)" aria-label="Previous Reel" class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/50 hover:bg-black/80 backdrop-blur-md text-white flex items-center justify-center border border-white/20 transition active:scale-90 z-20">
+        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+      </button>
+
+      <button onclick="navigateReel(1)" aria-label="Next Reel" class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/50 hover:bg-black/80 backdrop-blur-md text-white flex items-center justify-center border border-white/20 transition active:scale-90 z-20">
+        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+      </button>
+
+      <div class="absolute bottom-6 left-5 pointer-events-none z-20">
+        <span class="text-xs font-bold text-[#D4AF37] tracking-widest block uppercase">KK TEXMART REELS</span>
+        <span class="text-[10px] text-white/80 font-medium">Mirpur, Dhaka</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="fixed bottom-20 sm:bottom-8 right-4 sm:right-6 z-40 flex flex-col gap-2.5 items-end">
+    <a id="floatingWaBtn" href="https://wa.me/8801833800761" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="w-11 h-11 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-105 transition active:scale-95">
+      <svg class="w-6 h-6 fill-white" viewBox="0 0 24 24">
+        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+      </svg>
+    </a>
+    <a id="floatingMsgBtn" href="https://www.facebook.com/share/1Mfz4PH4sh/" target="_blank" rel="noopener noreferrer" aria-label="Facebook Messenger" class="w-11 h-11 rounded-full bg-[#0084FF] text-white flex items-center justify-center shadow-lg hover:scale-105 transition active:scale-95">
+      <svg class="w-6 h-6 fill-white" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.518 3.734 7.205V22l3.39-1.86c.91.252 1.88.388 2.876.388 5.523 0 10-4.145 10-9.27C22 6.145 17.523 2 12 2zm1.066 12.443l-2.613-2.787-5.097 2.787 5.606-5.952 2.678 2.787 5.032-2.787-5.606 5.952z"/></svg>
+    </a>
+  </div>
+
+  <div class="md:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-50 px-3 py-2 flex items-center justify-around shadow-[0_-4px_16px_rgba(0,0,0,0.04)]">
+    <button onclick="navigateTo('home'); scrollToSection('banner-sec')" class="flex flex-col items-center gap-1 text-slate-800">
+      <i data-lucide="home" class="w-5 h-5 stroke-[1.75]"></i>
+      <span class="text-[10px] font-semibold">Home</span>
+    </button>
+    <button onclick="navigateTo('search')" class="flex flex-col items-center gap-1 text-slate-800">
+      <i data-lucide="search" class="w-5 h-5 stroke-[1.75]"></i>
+      <span class="text-[10px] font-semibold">Search</span>
+    </button>
+    <a id="mobileBottomCartLink" href="cart.html" class="flex flex-col items-center gap-1 text-slate-800 relative">
+      <div class="relative">
+        <i data-lucide="shopping-bag" class="w-5 h-5 stroke-[1.75]"></i>
+        <span id="mobileBottomCartBadge" class="absolute -top-1.5 -right-2.5 min-w-[16px] h-[16px] bg-[#9B5A4B] text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1">0</span>
+      </div>
+      <span class="text-[10px] font-semibold">Cart</span>
+    </a>
+    <button onclick="openTrackOrderModal()" class="flex flex-col items-center gap-1 text-slate-800">
+      <i data-lucide="truck" class="w-5 h-5 stroke-[1.75]"></i>
+      <span class="text-[10px] font-semibold">Track</span>
+    </button>
+    <a id="mobileBottomCallLink" href="tel:01833800761" class="flex flex-col items-center gap-1 text-slate-800">
+      <i data-lucide="phone-call" class="w-5 h-5 stroke-[1.75]"></i>
+      <span class="text-[10px] font-semibold">Call</span>
+    </a>
+  </div>
+
+  <script>
+    document.getElementById('currentYear').innerText = new Date().getFullYear();
+
+    const LOGO_PLACEHOLDER = "https://res.cloudinary.com/dwgvvzbvn/image/upload/v1790933307/fbvhveeektcotj2yg5gi.jpg";
+    const currentShop = 'kktexmart';
+    const CART_STORAGE_KEY = 'cart_kktexmart';
+
+    function optImg(url, width = 500) {
+      if (!url) return LOGO_PLACEHOLDER;
+      if (typeof url === 'string' && url.includes('cloudinary.com')) {
+        if (url.includes('/f_auto,q_auto')) return url;
+        return url.replace('/upload/', `/upload/f_auto,q_auto,w_${width}/`);
+      }
+      return url;
+    }
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCiK8ublFGr7i8JrzbtW-85C3aaujqMfR0",
+      authDomain: "kk-texmart.firebaseapp.com",
+      databaseURL: "https://kk-texmart-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "kk-texmart",
+      storageBucket: "kk-texmart.firebasestorage.app",
+      messagingSenderId: "140270212285",
+      appId: "1:140270212285:web:a0986584b35194888153d4",
+      measurementId: "G-FMSG7WRJK1"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const PATHS = {
+      settings: `stores/${currentShop}/settings`,
+      announcement: `stores/${currentShop}/announcement`,
+      banners: `stores/${currentShop}/banners`,
+      categories: `stores/${currentShop}/categories`,
+      products: `stores/${currentShop}/products`,
+      campaigns: `stores/${currentShop}/campaigns`,
+      customCollections: `stores/${currentShop}/customCollections`,
+      ads: `stores/${currentShop}/ads`,
+      shorts: `stores/${currentShop}/shorts`
+    };
+
+    let allCustomCollections = {};
+    let allProducts = [];
+    let allCategories = [];
+    let allCampaigns = [];
+    let allAds = [];
+
+    // Reels Management Variables
+    let currentReelsList = [];
+    let currentFullscreenIndex = 0;
+    let activeUnmutedReelIndex = null;
+    let isFsModalOpen = false;
+
+    let heroSwiper = null;
+    let newArrivalsSwiper = null;
+    let customColSwipers = [];
+
+    db.ref(PATHS.customCollections).on('value', snap => {
+      allCustomCollections = snap.val() || {};
+      renderCustomCollectionsShowcase();
+
+      // কালেকশন পেজের সরাসরি শেয়ার্ড লিংকে কেউ ঢুকলে ডাটা আসার পর অটো রিফ্রেশ হবে
+      const hash = window.location.hash.replace('#', '');
+      if (hash && hash.startsWith('catalog=')) {
+        const [v, p] = hash.split('=');
+        if (p && p !== 'All%20Products') {
+          navigateTo(v, decodeURIComponent(p), false);
+        }
+      }
+    });
+
+    // কাস্টম কালেকশন সেকশন: উপরে নিউ এ্যারাইভালের মতো স্মুথ এনিমেটেড স্লাইডার এবং নিচে মার্জিত ব্যাকগ্রাউন্ডে নাম
+    function renderCustomCollectionsShowcase() {
+      const container = document.getElementById('custom-collections-sec');
+      const targetDiv = document.getElementById('homeCustomCollectionsContainer');
+      if (!container || !targetDiv) return;
+
+      const keys = Object.keys(allCustomCollections);
+      if (keys.length === 0) {
+        container.classList.add('hidden');
+        return;
+      }
+
+      container.classList.remove('hidden');
+      targetDiv.innerHTML = '';
+
+      // আগের সোয়াইপার ইনস্ট্যান্স ক্লিয়ার করা
+      customColSwipers.forEach(s => { if (s && s.destroy) s.destroy(true, true); });
+      customColSwipers = [];
+
+      keys.forEach((k, colIdx) => {
+        const col = allCustomCollections[k];
+        if (!col) return;
+
+        const colProdIds = Array.isArray(col.productIds) ? col.productIds.map(String) : [];
+        let matched = allProducts.filter(p => colProdIds.includes(String(p.id)));
+        if (matched.length === 0 && allProducts.length > 0) {
+          matched = allProducts.slice(colIdx * 4, (colIdx * 4) + 8);
+        }
+
+        const swiperClass = `myCustomColSwiper_${colIdx}`;
+        const colCard = document.createElement('div');
+        colCard.className = "relative rounded-3xl bg-gradient-to-b from-[#FDFBF7]/80 via-white to-[#F8F5EE] border border-[#EAE0D0] p-3 sm:p-6 overflow-hidden shadow-xs select-none";
+
+        colCard.innerHTML = `
+          <!-- উপরে নিউ এ্যারিবলের মতো স্মুথ স্লাইডার -->
+          <div class="swiper ${swiperClass} customColSwiper py-2">
+            <div class="swiper-wrapper" id="custom-wrapper-${colIdx}"></div>
+          </div>
+
+          <!-- নিচেই কালেকশনের নাম সুন্দর ব্যাকগ্রাউন্ডে এবং বাটন -->
+          <div class="mt-2 pt-3 sm:pt-4 border-t border-[#EFE8DC] flex items-center justify-between gap-3 px-2">
+            <div class="flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#D4AF37] shadow-xs"></span>
+              <span class="font-display font-bold tracking-[0.18em] sm:tracking-[0.22em] text-xs sm:text-sm md:text-base text-slate-900 uppercase">
+                ${col.title || 'EXCLUSIVE COLLECTION'}
+              </span>
+            </div>
+
+            <button onclick="openCollectionByKey('${k}')" class="shop-now-spin-btn active:scale-95 transition-transform shrink-0">
+              <div>
+                <span>VIEW ALL</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5 stroke-[2.5]"></i>
+              </div>
+            </button>
+          </div>
+        `;
+
+        targetDiv.appendChild(colCard);
+
+        const swiperWrapper = colCard.querySelector(`#custom-wrapper-${colIdx}`);
+        matched.forEach(p => {
+          const slide = document.createElement('div');
+          slide.className = 'swiper-slide !w-[68%] sm:!w-64';
+          slide.appendChild(createProductCard(p));
+          swiperWrapper.appendChild(slide);
+        });
+
+        // সোয়াইপার ইনিশিয়ালাইজেশন
+        if (matched.length > 0) {
+          const newSwiper = new Swiper(`.${swiperClass}`, {
+            slidesPerView: 'auto',
+            centeredSlides: true,
+            loop: matched.length > 2,
+            spaceBetween: 14,
+            speed: 650,
+            autoplay: {
+              delay: 2800 + (colIdx * 500),
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true
+            }
+          });
+          customColSwipers.push(newSwiper);
+        }
+      });
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function openCollectionByKey(key) {
+      const col = allCustomCollections[key];
+      const title = col ? (col.title || 'Collection') : 'Collection';
+      const productIds = col ? (col.productIds || []) : [];
+      openCollectionProducts(title, productIds);
+    }
+
+    function openCollectionProducts(title, productIds) {
+      navigateTo('catalog', title);
+      
+      const safeIds = Array.isArray(productIds) ? productIds.map(String) : [];
+      let matched = allProducts.filter(p => safeIds.includes(String(p.id)));
+
+      if (matched.length === 0 && allProducts.length > 0) {
+        matched = allProducts.filter(p => (p.category && p.category.toLowerCase() === (title || '').toLowerCase()));
+      }
+
+      document.getElementById('catalogViewTitle').innerText = title || 'Collection';
+      const subTitle = document.getElementById('catalogViewSubtitle');
+      if (subTitle) {
+        subTitle.innerText = `${matched.length} ${matched.length === 1 ? 'Item' : 'Items'} in Collection`;
+      }
+
+      const grid = document.getElementById('catalogProductGrid');
+      if (grid) {
+        grid.innerHTML = '';
+        if (matched.length === 0) {
+          grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-400 font-medium text-xs tracking-widest uppercase">No products found in this collection</div>`;
+        } else {
+          matched.forEach(p => grid.appendChild(createProductCard(p)));
+        }
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function showStoreToast(msg, isError = false) {
+      const container = document.getElementById('storeToastContainer');
+      if (!container) return;
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto px-5 py-3 rounded-2xl border text-xs font-bold shadow-2xl flex items-center gap-3 backdrop-blur-md transition-all duration-300 ${
+        isError ? 'bg-rose-50 border-rose-200 text-rose-700' : 'bg-slate-900 border-slate-800 text-white'
+      }`;
+      toast.innerHTML = `<i data-lucide="${isError ? 'alert-circle' : 'check-circle-2'}" class="w-4 h-4"></i><span>${msg}</span>`;
+      container.appendChild(toast);
+      if (window.lucide) lucide.createIcons();
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+
+    const K_CACHE_PROD = `kkt_cache_prod_${currentShop}`;
+    const K_CACHE_CATS = `kkt_cache_cats_${currentShop}`;
+    const K_CACHE_BANS = `kkt_cache_bans_${currentShop}`;
+
+    (function instantHydrate() {
+      try {
+        const cachedB = localStorage.getItem(K_CACHE_BANS);
+        if (cachedB) renderBanners(JSON.parse(cachedB));
+
+        const cachedC = localStorage.getItem(K_CACHE_CATS);
+        if (cachedC) renderCategoriesData(JSON.parse(cachedC));
+
+        const cachedP = localStorage.getItem(K_CACHE_PROD) || localStorage.getItem(`kkt_prod_${currentShop}`);
+        if (cachedP) {
+          allProducts = JSON.parse(cachedP);
+          renderNewArrivalsSlider();
+          renderCustomCollectionsShowcase();
+          buildHomeSections();
+        }
+      } catch(e) {}
+    })();
+
+    db.ref(PATHS.announcement).on('value', snap => {
+      const val = snap.val();
+      const aBar = document.getElementById('announcementBar');
+      const aText = document.getElementById('announcementText');
+      if (val && typeof val === 'string' && val.trim()) {
+        aText.innerText = val;
+        aBar.classList.remove('hidden');
+      } else {
+        aBar.classList.add('hidden');
+      }
+    });
+
+    db.ref(PATHS.ads).on('value', snap => {
+      const data = snap.val();
+      allAds = data ? Object.values(data) : [];
+      buildHomeSections();
+    });
+
+    // Firebase থেকে Shorts এনে ব্যানারে ২ পাশে রেন্ডার
+    db.ref(PATHS.shorts).on('value', snap => {
+      const data = snap.val() || {};
+      renderDualReelsUI(data);
+      if (Object.keys(data).length === 0 && isFsModalOpen) {
+        closeFullscreenReel(true);
+      }
+    });
+
+    function renderDualReelsUI(data) {
+      const container = document.getElementById('reelsDualContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!data || Object.keys(data).length === 0) {
+        currentReelsList = [];
+        return;
+      }
+
+      const reelsList = Object.values(data);
+      if (reelsList.length === 0) {
+        currentReelsList = [];
+        return;
+      }
+
+      currentReelsList = reelsList;
+      const maxReels = reelsList.slice(0, 2);
+
+      maxReels.forEach((reel, index) => {
+        const vUrl = typeof reel === 'object' ? reel.url : reel;
+        if (!vUrl) return;
+
+        const sideClass = (index === 0) ? 'hero-reel-left' : 'hero-reel-right';
+        const widgetId = `floatingReelWidget-${index}`;
+
+        const widget = document.createElement('div');
+        widget.id = widgetId;
+        widget.className = `hero-reel-widget ${sideClass} group select-none cursor-pointer skeleton-shimmer`;
+
+        widget.innerHTML = `
+          <div class="relative w-full h-full" onclick="openFullscreenReel(${index})">
+            <video 
+              id="reelVideo-${index}" 
+              src="${vUrl}" 
+              class="w-full h-full object-cover transition-opacity duration-300 opacity-0" 
+              loop 
+              autoplay 
+              muted 
+              playsinline
+              preload="auto"
+              onloadeddata="this.classList.remove('opacity-0'); this.parentElement.parentElement.classList.remove('skeleton-shimmer');"
+            ></video>
+
+            <button 
+              type="button" 
+              onclick="toggleReelAudio(${index}, event)" 
+              class="absolute top-1.5 left-1.5 w-6 h-6 rounded-full bg-black/60 backdrop-blur-md border border-[#D4AF37]/50 text-[#D4AF37] flex items-center justify-center transition active:scale-90 z-20"
+              title="সাউন্ড"
+            >
+              <i data-lucide="volume-x" class="w-3.5 h-3.5 text-[#D4AF37]" id="reelAudioIcon-${index}"></i>
+            </button>
+
+            <button 
+              type="button" 
+              onclick="event.stopPropagation(); dismissReel('${widgetId}')" 
+              class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition active:scale-90 hover:bg-rose-600 z-20"
+              title="সরিয়ে দিন"
+            >
+              <i data-lucide="x" class="w-3 h-3 text-white"></i>
+            </button>
+
+            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-transparent to-transparent p-1.5 pointer-events-none flex items-center justify-between z-10">
+              <span class="text-[8px] font-extrabold text-[#D4AF37] tracking-widest uppercase">KK TEX</span>
+              <span class="text-[7px] text-white/70 font-semibold tracking-wider uppercase">REEL</span>
+            </div>
+          </div>
+        `;
+
+        container.appendChild(widget);
+        attachSwipeDismiss(widget);
+      });
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function toggleReelAudio(index, event) {
+      if (event) event.stopPropagation();
+      const vid = document.getElementById(`reelVideo-${index}`);
+      const icon = document.getElementById(`reelAudioIcon-${index}`);
+      const widget = document.getElementById(`floatingReelWidget-${index}`);
+      if (!vid) return;
+
+      if (vid.muted) {
+        document.querySelectorAll('video[id^="reelVideo-"]').forEach((v, i) => {
+          v.muted = true;
+          const otherIcon = document.getElementById(`reelAudioIcon-${i}`);
+          if (otherIcon) otherIcon.setAttribute('data-lucide', 'volume-x');
+          const otherWidget = document.getElementById(`floatingReelWidget-${i}`);
+          if (otherWidget) otherWidget.classList.remove('reel-pip');
+        });
+
+        vid.muted = false;
+        activeUnmutedReelIndex = index;
+        if (icon) icon.setAttribute('data-lucide', 'volume-2');
+        triggerReelPipCheck();
+      } else {
+        vid.muted = true;
+        activeUnmutedReelIndex = null;
+        if (icon) icon.setAttribute('data-lucide', 'volume-x');
+        if (widget) widget.classList.remove('reel-pip');
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function openFullscreenReel(index) {
+      if (!currentReelsList || currentReelsList.length === 0) return;
+      currentFullscreenIndex = index;
+      isFsModalOpen = true;
+
+      pauseAndMuteAllReels();
+
+      const modal = document.getElementById('fullscreenReelsModal');
+      const fsVid = document.getElementById('fsReelVideo');
+      const reel = currentReelsList[index];
+      const vUrl = typeof reel === 'object' ? reel.url : reel;
+
+      if (fsVid) {
+        fsVid.src = vUrl;
+        fsVid.muted = false;
+        fsVid.play().catch(() => {
+          fsVid.muted = true;
+          fsVid.play();
+        });
+      }
+
+      const audioIcon = document.getElementById('fsAudioIcon');
+      if (audioIcon && fsVid) {
+        audioIcon.setAttribute('data-lucide', fsVid.muted ? 'volume-x' : 'volume-2');
+      }
+
+      if (modal) modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      window.history.pushState({ isReelOpen: true }, '');
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeFullscreenReel(fromPopState = false) {
+      if (!isFsModalOpen) return;
+      isFsModalOpen = false;
+
+      const modal = document.getElementById('fullscreenReelsModal');
+      const fsVid = document.getElementById('fsReelVideo');
+      if (fsVid) {
+        fsVid.pause();
+        fsVid.src = '';
+      }
+
+      if (modal) modal.classList.remove('active');
+      document.body.style.overflow = '';
+
+      if (!fromPopState && window.history.state && window.history.state.isReelOpen) {
+        window.history.back();
+      }
+    }
+
+    function navigateReel(direction) {
+      if (!currentReelsList || currentReelsList.length === 0) return;
+      let nextIndex = currentFullscreenIndex + direction;
+
+      if (nextIndex < 0) nextIndex = currentReelsList.length - 1;
+      else if (nextIndex >= currentReelsList.length) nextIndex = 0;
+
+      openFullscreenReel(nextIndex);
+    }
+
+    function toggleFsAudio() {
+      const fsVid = document.getElementById('fsReelVideo');
+      const audioIcon = document.getElementById('fsAudioIcon');
+      if (!fsVid) return;
+
+      fsVid.muted = !fsVid.muted;
+      if (audioIcon) {
+        audioIcon.setAttribute('data-lucide', fsVid.muted ? 'volume-x' : 'volume-2');
+        if (window.lucide) lucide.createIcons();
+      }
+    }
+
+    function pauseAndMuteAllReels() {
+      document.querySelectorAll('video[id^="reelVideo-"]').forEach((v, i) => {
+        v.muted = true;
+        const icon = document.getElementById(`reelAudioIcon-${i}`);
+        if (icon) icon.setAttribute('data-lucide', 'volume-x');
+        const widget = document.getElementById(`floatingReelWidget-${i}`);
+        if (widget) widget.classList.remove('reel-pip');
+      });
+      activeUnmutedReelIndex = null;
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function dismissReel(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.add('reel-dismissed');
+      const v = el.querySelector('video');
+      if (v) {
+        v.muted = true;
+        v.pause();
+      }
+      activeUnmutedReelIndex = null;
+      setTimeout(() => el.remove(), 400);
+    }
+
+    function attachSwipeDismiss(el) {
+      let startX = 0, currentX = 0, isDragging = false;
+
+      el.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+        el.style.transition = 'none';
+      }, { passive: true });
+
+      el.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentX = e.touches[0].clientX - startX;
+        el.style.transform = `translateX(${currentX}px) scale(${1 - Math.min(Math.abs(currentX)/350, 0.2)})`;
+        el.style.opacity = `${1 - Math.min(Math.abs(currentX)/200, 0.7)}`;
+      }, { passive: true });
+
+      el.addEventListener('touchend', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        el.style.transition = 'all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1)';
+        if (Math.abs(currentX) > 60) {
+          el.style.transform = `translateX(${currentX > 0 ? 300 : -300}px) scale(0.4)`;
+          el.style.opacity = '0';
+          setTimeout(() => dismissReel(el.id), 280);
+        } else {
+          el.style.transform = '';
+          el.style.opacity = '1';
+        }
+      });
+    }
+
+    function triggerReelPipCheck() {
+      const banner = document.querySelector('.myHeroSwiper');
+      if (!banner) return;
+      const rect = banner.getBoundingClientRect();
+      const isPassed = rect.bottom < 120;
+
+      document.querySelectorAll('.hero-reel-widget').forEach((w, idx) => {
+        if (isPassed && activeUnmutedReelIndex === idx) {
+          w.classList.add('reel-pip');
+        } else {
+          w.classList.remove('reel-pip');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      triggerReelPipCheck();
+    }, { passive: true });
+
+    db.ref(PATHS.banners).on('value', snap => {
+      const data = snap.val();
+      if (data) {
+        localStorage.setItem(K_CACHE_BANS, JSON.stringify(data));
+        renderBanners(data);
+      }
+    });
+
+    function renderBanners(data) {
+      const wrapper = document.getElementById('bannerSliderWrapper');
+      if (!wrapper || !data) return;
+      wrapper.innerHTML = '';
+      
+      const bannerList = Array.isArray(data) ? data : Object.values(data);
+      bannerList.forEach((b, idx) => {
+        if (!b) return;
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide w-full h-full relative overflow-hidden bg-white';
+        const imgUrl = optImg(b.imageUrl || b, 1200);
+        slide.innerHTML = `<img src="${imgUrl}" alt="Banner" class="w-full h-full object-cover" ${idx === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}>`;
+        wrapper.appendChild(slide);
+      });
+
+      if (heroSwiper) heroSwiper.destroy(true, true);
+      heroSwiper = new Swiper('.myHeroSwiper', {
+        loop: bannerList.length > 1,
+        speed: 600,
+        autoplay: { delay: 4000, disableOnInteraction: false },
+        pagination: { el: '.swiper-pagination', clickable: true }
+      });
+    }
+
+    db.ref(PATHS.categories).on('value', snap => {
+      const data = snap.val();
+      if (data) {
+        localStorage.setItem(K_CACHE_CATS, JSON.stringify(data));
+        renderCategoriesData(data);
+      }
+    });
+
+    function renderCategoriesData(data) {
+      const sliderWrapper = document.getElementById('homeCategorySliderWrapper');
+      const allGrid = document.getElementById('allCollectionsGrid');
+      const drawerList = document.getElementById('drawerCategories');
+      const quickPills = document.getElementById('quickPillsBar');
+
+      if (sliderWrapper) sliderWrapper.innerHTML = '';
+      if (allGrid) allGrid.innerHTML = '';
+      if (drawerList) drawerList.innerHTML = '';
+      
+      allCategories = [];
+      if (!data) return;
+
+      Object.entries(data).forEach(([key, rawCat]) => {
+        if (!rawCat) return;
+        const cat = typeof rawCat === 'string' ? { name: rawCat, imageUrl: LOGO_PLACEHOLDER } : rawCat;
+        if (!cat.name) cat.name = key;
+        if (!cat.imageUrl) cat.imageUrl = LOGO_PLACEHOLDER;
+        allCategories.push(cat);
+      });
+
+      if (quickPills && allCategories.length > 0) {
+        const createMarqueeItems = () => {
+          return `
+            <div class="inline-flex items-center gap-6 shrink-0 cursor-pointer">
+              <span onclick="navigateTo('catalog', 'All Products')" class="text-[11px] sm:text-xs font-extrabold uppercase tracking-[0.2em] text-[#9B5A4B] hover:text-black transition flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#9B5A4B]"></span>
+                ALL PRODUCTS
+              </span>
+              ${allCategories.map(cat => `
+                <span class="text-[#D4AF37]/50">•</span>
+                <span onclick="navigateTo('category', '${cat.name}')" class="text-[11px] sm:text-xs font-bold uppercase tracking-[0.16em] text-slate-800 hover:text-[#9B5A4B] transition">
+                  ${cat.name}
+                </span>
+              `).join('')}
+            </div>
+          `;
+        };
+        quickPills.innerHTML = createMarqueeItems() + createMarqueeItems();
+      }
+
+      Object.entries(data).forEach(([key, rawCat]) => {
+        if (!rawCat) return;
+        const cat = typeof rawCat === 'string' ? { name: rawCat, imageUrl: LOGO_PLACEHOLDER } : rawCat;
+        if (!cat.name) cat.name = key;
+        if (!cat.imageUrl) cat.imageUrl = LOGO_PLACEHOLDER;
+
+        if (sliderWrapper) {
+          const card = document.createElement('div');
+          card.className = "group relative w-full aspect-[3/4.2] sm:aspect-[3/4] rounded-2xl sm:rounded-3xl overflow-hidden bg-stone-100 border border-[#E8DEC8]/60 shadow-[0_4px_15px_rgba(0,0,0,0.03)] cursor-pointer select-none";
+          card.onclick = () => navigateTo('category', cat.name);
+          card.innerHTML = `
+            <img src="${optImg(cat.imageUrl, 650)}" alt="${cat.name}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
+            <div class="absolute bottom-3 inset-x-0 flex justify-center z-10 px-2 pointer-events-none">
+              <span class="bg-black/85 backdrop-blur-md text-white font-display text-[11px] sm:text-xs font-bold tracking-[0.14em] px-4 py-1.5 rounded-lg shadow-md border border-white/15 text-center truncate group-hover:bg-[#9B5A4B] group-hover:border-[#9B5A4B] transition-all duration-300">
+                ${cat.name}
+              </span>
+            </div>
+          `;
+          sliderWrapper.appendChild(card);
+        }
+
+        if (allGrid) {
+          const card = document.createElement('div');
+          card.className = "group relative w-full aspect-[3/4] rounded-2xl overflow-hidden bg-stone-100 border border-[#E8DEC8]/60 shadow-xs cursor-pointer select-none";
+          card.onclick = () => navigateTo('category', cat.name);
+          card.innerHTML = `
+            <img src="${optImg(cat.imageUrl, 550)}" alt="${cat.name}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out" loading="lazy">
+            <div class="absolute bottom-3 inset-x-0 flex justify-center z-10 px-2 pointer-events-none">
+              <span class="bg-[#FAF8F5]/95 backdrop-blur-md text-slate-900 font-display text-[10px] sm:text-xs font-bold tracking-wider px-3.5 py-1 rounded-lg border border-stone-200/80 text-center truncate group-hover:bg-slate-950 group-hover:text-white transition-colors duration-300">
+                ${cat.name}
+              </span>
+            </div>
+          `;
+          allGrid.appendChild(card);
+        }
+
+        if (drawerList) {
+          const dItem = document.createElement('div');
+          dItem.className = "flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold tracking-wider uppercase text-slate-700 hover:text-slate-950 hover:bg-white transition cursor-pointer select-none group";
+          dItem.innerHTML = `<span>${cat.name}</span><i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-300 group-hover:text-[#9B5A4B] transition"></i>`;
+          dItem.onclick = () => { toggleMenu(); navigateTo('category', cat.name); };
+          drawerList.appendChild(dItem);
+        }
+      });
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    db.ref(PATHS.products).once('value').then(snap => {
+      const data = snap.val();
+      if (data) {
+        const freshProducts = Object.entries(data)
+          .filter(([_, item]) => item && typeof item === 'object')
+          .map(([id, item]) => ({ id, ...item }));
+        
+        localStorage.setItem(K_CACHE_PROD, JSON.stringify(freshProducts));
+        allProducts = freshProducts;
+        renderNewArrivalsSlider();
+        renderCustomCollectionsShowcase();
+        buildHomeSections();
+
+        // শেয়ার্ড লিংক থাকলে প্রোডাক্ট লোড হওয়ার পর সেই পেজটি রিফ্রেশ হবে
+        const hash = window.location.hash.replace('#', '');
+        if (hash) {
+          const [v, p] = hash.split('=');
+          if (v && v !== 'home') {
+            navigateTo(v, p ? decodeURIComponent(p) : null, false);
+          }
+        }
+      }
+    });
+
+    db.ref(PATHS.products).on('child_changed', snap => {
+      const updated = snap.val();
+      const id = snap.key;
+      const idx = allProducts.findIndex(p => p.id === id);
+      if (idx > -1 && updated) {
+        allProducts[idx] = { id, ...updated };
+        localStorage.setItem(K_CACHE_PROD, JSON.stringify(allProducts));
+        renderNewArrivalsSlider();
+        renderCustomCollectionsShowcase();
+      }
+    });
+
+    function getProductTotalStock(p) {
+      if (!p) return 0;
+      if (p.sizeStock && typeof p.sizeStock === 'object') {
+        return Object.values(p.sizeStock).reduce((sum, n) => sum + (Number(n) || 0), 0);
+      }
+      return Number(p.stock) || 0;
+    }
+
+    let currentCategoryProducts = [];
+
+    function renderCategoryProducts(list) {
+      const subTitle = document.getElementById('categoryViewSubtitle');
+      if (subTitle) {
+        subTitle.innerText = `${list.length} ${list.length === 1 ? 'Item' : 'Items'} Available`;
+      }
+
+      const grid = document.getElementById('categoryProductGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      if (list.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-400 font-medium text-xs tracking-widest uppercase">No products available in this category</div>`;
+      } else {
+        list.forEach(p => grid.appendChild(createProductCard(p)));
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function applyCategorySort() {
+      const sortType = document.getElementById('categorySortSelect').value;
+      let sorted = [...currentCategoryProducts];
+
+      if (sortType === 'price-desc') {
+        sorted.sort((a, b) => {
+          const priceA = Number(a.discountPrice || a.regularPrice || 0);
+          const priceB = Number(b.discountPrice || b.regularPrice || 0);
+          return priceB - priceA;
+        });
+      } else if (sortType === 'price-asc') {
+        sorted.sort((a, b) => {
+          const priceA = Number(a.discountPrice || a.regularPrice || 0);
+          const priceB = Number(b.discountPrice || b.regularPrice || 0);
+          return priceA - priceB;
+        });
+      }
+      renderCategoryProducts(sorted);
+    }
+
+    function createProductCard(p) {
+      const totalStock = getProductTotalStock(p);
+      const isOutOfStock = totalStock <= 0;
+      const hasDiscount = p.discountPrice && Number(p.discountPrice) < Number(p.regularPrice);
+      const price = Number(p.discountPrice || p.regularPrice || 0);
+      const regPrice = Number(p.regularPrice || 0);
+      const discountPercent = (hasDiscount && regPrice > 0) ? Math.round(((regPrice - price) / regPrice) * 100) : 0;
+
+      const card = document.createElement('div');
+      card.className = "flex flex-col rounded-2xl overflow-hidden cursor-pointer select-none group";
+      card.onclick = () => { if (!isOutOfStock) directBuyNow(p.id); };
+
+      card.innerHTML = `
+        <div class="relative w-full aspect-[3/4] bg-white rounded-2xl overflow-hidden border border-[#EAE3D5] shadow-xs">
+          <img 
+            src="${optImg(p.imageUrl || LOGO_PLACEHOLDER, 420)}" 
+            alt="${p.name || 'Product'}" 
+            class="w-full h-full object-cover object-top ${isOutOfStock ? 'opacity-40' : 'group-hover:scale-105'} transition-transform duration-500"
+            onerror="this.src='${LOGO_PLACEHOLDER}'"
+            loading="lazy"
+            decoding="async"
+            width="300"
+            height="400"
+          >
+          ${(hasDiscount && discountPercent > 0) ? `
+            <span class="absolute top-2 left-2 bg-[#9B5A4B] text-white text-[10px] font-bold px-2 py-0.5 rounded shadow tracking-wider">
+              -${discountPercent}%
+            </span>` : ''
+          }
+          ${p.isFreeDelivery ? `
+            <span class="absolute top-2 right-2 bg-slate-900 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow">
+              Free Delivery
+            </span>` : ''
+          }
+          ${isOutOfStock ? `
+            <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+              <span class="bg-black text-white text-[10px] uppercase font-bold px-3 py-1 rounded">Stock Out</span>
+            </div>
+          ` : ''}
+        </div>
+
+        <div class="bg-[#FBF9F5] rounded-xl mt-2 p-2.5 text-center border border-[#ECE5D8] shadow-2xs">
+          <h3 class="font-serif italic text-xs sm:text-sm text-slate-900 truncate">
+            ${p.name || 'KK Texmart Exclusive'}
+          </h3>
+          <div class="flex items-center justify-center gap-2 mt-1 text-xs">
+            <span class="font-bold text-slate-950 font-mono">Tk ${price.toLocaleString()}</span>
+            ${hasDiscount ? `<span class="text-slate-400 line-through text-[11px] font-mono">Tk ${regPrice.toLocaleString()}</span>` : ''}
+          </div>
+        </div>
+      `;
+      return card;
+    }
+
+    function renderNewArrivalsSlider() {
+      const wrapper = document.getElementById('newArrivalsSliderWrapper');
+      if (!wrapper) return;
+      wrapper.innerHTML = '';
+
+      const items = allProducts.slice(0, 12);
+      if (items.length === 0) return;
+
+      items.forEach(p => {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide !w-[68%] sm:!w-64';
+        slide.appendChild(createProductCard(p));
+        wrapper.appendChild(slide);
+      });
+
+      if (newArrivalsSwiper) newArrivalsSwiper.destroy(true, true);
+      newArrivalsSwiper = new Swiper('.myNewArrivalsSwiper', {
+        slidesPerView: 'auto',
+        centeredSlides: true,
+        loop: items.length > 2,
+        spaceBetween: 14,
+        speed: 650,
+        autoplay: {
+          delay: 2400,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true
+        }
+      });
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function buildHomeSections() {
+      const container = document.getElementById('dynamicSectionsContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const freeDelProducts = allProducts.filter(p => p.isFreeDelivery);
+      let freeDeliveryRendered = false;
+      let adIndex = 0;
+      let renderedCategoryCount = 0;
+
+      allCategories.forEach((cat, idx) => {
+        const catProducts = allProducts.filter(p => p.category === cat.name);
+        if (catProducts.length === 0) return;
+
+        renderedCategoryCount++;
+
+        const sec = document.createElement('div');
+        sec.className = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6";
+        sec.innerHTML = `
+          <!-- ক্যাটাগরির শিরোনাম -->
+          <div class="text-center pt-2">
+            <h2 class="font-serif italic text-xl sm:text-2xl md:text-3xl text-slate-900 tracking-wide">
+              ${cat.name}
+            </h2>
+          </div>
+
+          <!-- ক্যাটাগরির ফিচার্ড ব্যানার -->
+          <div onclick="navigateTo('category', '${cat.name}')" class="relative w-full aspect-[4/4.8] sm:aspect-[16/9] md:aspect-[21/9] rounded-2xl sm:rounded-3xl overflow-hidden bg-stone-100 border border-[#EAE0D0] cursor-pointer group shadow-sm select-none">
+            <img 
+              src="${optImg(cat.bannerUrl || cat.imageUrl || LOGO_PLACEHOLDER, 1200)}" 
+              alt="${cat.name}" 
+              class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
+              loading="lazy"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end justify-center pb-5 sm:pb-7 px-4">
+              <span class="font-display font-extrabold text-white text-sm sm:text-lg md:text-xl tracking-[0.2em] sm:tracking-[0.25em] uppercase drop-shadow-md text-center">
+                ${cat.name}
+              </span>
+            </div>
+          </div>
+
+          <!-- ক্যাটাগরি প্রোডাক্ট গ্রিড -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-6 pt-1" id="grid-cat-${idx}"></div>
+        `;
+        container.appendChild(sec);
+
+        const grid = sec.querySelector(`#grid-cat-${idx}`);
+        
+        // স্ক্রিন সাইজ চেক: মোবাইল (width < 640px) নাকি পিসি
+        const isMobileScreen = window.innerWidth < 640;
+
+        // পিসিতে সব প্রোডাক্ট দেখাবে। মোবাইলে ১০টির বেশি থাকলে ১০টি দেখাবে
+        let displayLimit = catProducts.length;
+        if (isMobileScreen && catProducts.length > 10) {
+          displayLimit = 10;
+        }
+
+        const sliceProducts = catProducts.slice(0, displayLimit);
+
+        sliceProducts.forEach((p, pIndex) => {
+          // শুধুমাত্র মোবাইলে এবং ১০টির বেশি প্রোডাক্ট থাকলে ১০ নম্বর প্রোডাক্টে View More ওভারলে আসবে
+          const isMobileViewMore = isMobileScreen && (catProducts.length > 10) && (pIndex === displayLimit - 1);
+
+          if (isMobileViewMore) {
+            const moreWrapper = document.createElement('div');
+            moreWrapper.className = "relative rounded-2xl overflow-hidden group cursor-pointer";
+            moreWrapper.onclick = () => navigateTo('category', cat.name);
+
+            const cardEl = createProductCard(p);
+            moreWrapper.appendChild(cardEl);
+
+            const remainingCount = catProducts.length - displayLimit + 1;
+
+            const overlay = document.createElement('div');
+            overlay.className = "absolute inset-0 bg-slate-950/75 backdrop-blur-[2.5px] flex flex-col items-center justify-center p-3 text-center transition-all duration-300 group-hover:bg-slate-950/85 rounded-2xl z-20";
+            overlay.innerHTML = `
+              <div class="w-11 h-11 rounded-full bg-white/20 border border-white/40 flex items-center justify-center text-white mb-2 shadow-lg group-hover:scale-110 group-hover:bg-[#9B5A4B] transition-all">
+                <i data-lucide="arrow-right" class="w-5 h-5 stroke-[2.2]"></i>
+              </div>
+              <span class="font-display font-extrabold text-white text-xs tracking-[0.18em] uppercase drop-shadow">
+                VIEW MORE
+              </span>
+              <span class="text-[10px] text-amber-200/90 font-medium tracking-wider mt-0.5">
+                +${remainingCount} More Items
+              </span>
+            `;
+            moreWrapper.appendChild(overlay);
+            grid.appendChild(moreWrapper);
+          } else {
+            grid.appendChild(createProductCard(p));
+          }
+        });
+
+        if (!freeDeliveryRendered && renderedCategoryCount === 2 && freeDelProducts.length > 0) {
+          freeDeliveryRendered = true;
+          const freeSec = document.createElement('div');
+          freeSec.className = "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-8 select-none";
+          freeSec.innerHTML = `
+            <div class="rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#FDFBF7] to-[#F5EFE6] border border-[#E8DEC8] p-3.5 sm:p-6 shadow-[0_4px_20px_rgba(212,175,55,0.06)]">
+              <div class="flex items-center justify-between pb-3 mb-3.5 sm:mb-5 border-b border-[#EADFCB]">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-[#9B5A4B]"></span>
+                  <h2 class="text-xs sm:text-base font-display font-extrabold tracking-[0.16em] sm:tracking-[0.2em] text-[#9B5A4B] uppercase">
+                    FREE DELIVERY
+                  </h2>
+                </div>
+                <button onclick="navigateTo('catalog', 'Free Delivery')" class="flex items-center gap-1 text-[11px] sm:text-xs font-bold tracking-wider text-slate-800 hover:text-[#9B5A4B] uppercase transition py-1">
+                  <span>See More</span>
+                  <i data-lucide="chevron-right" class="w-3.5 h-3.5 stroke-[2.5]"></i>
+                </button>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-5" id="freeDeliveryGrid"></div>
+            </div>
+          `;
+          container.appendChild(freeSec);
+          const freeGrid = freeSec.querySelector('#freeDeliveryGrid');
+          freeDelProducts.slice(0, 6).forEach(p => freeGrid.appendChild(createProductCard(p)));
+        }
+
+        });
+
+      // প্রমোশনাল ব্যানার: সব ক্যাটাগরি ও প্রোডাক্টের একদম সবার নিচে রেন্ডার হবে
+      if (allAds.length > 0) {
+        allAds.forEach(adObj => {
+          const adUrl = adObj.imageUrl || adObj;
+          const adDiv = document.createElement('div');
+          adDiv.className = "w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 my-8 select-none";
+
+          let clickAction = "navigateTo('catalog', 'All Products')";
+          let displayHeading = (typeof adObj === 'object' && adObj.linkTarget) ? adObj.linkTarget : "";
+
+          if (typeof adObj === 'object') {
+            if (adObj.linkType === 'category' && adObj.linkTarget) {
+              clickAction = `navigateTo('category', '${adObj.linkTarget}')`;
+            } else if (adObj.linkType === 'collection' && adObj.linkTarget) {
+              clickAction = `navigateTo('catalog', '${adObj.linkTarget}')`;
+            } else if (adObj.linkType === 'custom' && adObj.linkTarget) {
+              clickAction = `window.open('${adObj.linkTarget}', '_blank')`;
+            }
+          }
+          
+          adDiv.innerHTML = `
+            <div class="space-y-3">
+              <div onclick="${clickAction}" class="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-stone-100 border border-[#EFE8DC] cursor-pointer group shadow-sm">
+                <img src="${optImg(adUrl, 1400)}" alt="Offer Banner" class="w-full h-auto max-h-[460px] object-cover sm:object-fill mx-auto block group-hover:scale-[1.015] transition-transform duration-700 ease-out" loading="lazy" decoding="async">
+              </div>
+
+              ${displayHeading ? `
+                <div class="text-center pt-0.5 cursor-pointer" onclick="${clickAction}">
+                  <h3 class="font-serif italic text-base sm:text-xl text-slate-900 tracking-wide hover:text-[#9B5A4B] transition-colors">
+                    ${displayHeading}
+                  </h3>
+                </div>
+              ` : ''}
+            </div>
+          `;
+          container.appendChild(adDiv);
+        });
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    db.ref(PATHS.campaigns).on('value', snap => {
+      const val = snap.val();
+      allCampaigns = val ? Object.entries(val).map(([id, c]) => ({ id, ...c })) : [];
+      renderCombosUI();
+    });
+
+    function renderCombosUI() {
+      const grid = document.getElementById('allCombosGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      if (allCampaigns.length === 0) {
+        grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-400 font-medium text-xs tracking-widest uppercase">No combo packages currently available</div>`;
+        return;
+      }
+      allCampaigns.forEach(c => {
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition cursor-pointer";
+        card.onclick = () => { window.location.href = `checkout.html?campaign=${encodeURIComponent(c.id)}`; };
+        card.innerHTML = `
+          <div class="aspect-[16/9] w-full overflow-hidden bg-slate-100">
+            <img src="${optImg(c.imageUrl || LOGO_PLACEHOLDER, 600)}" alt="${c.title || 'Combo'}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="font-bold text-sm text-slate-900">${c.title || 'Exclusive Combo'}</h3>
+            <div class="text-xs font-mono font-bold text-[#9B5A4B] mt-1">Tk ${Number(c.price || 0).toLocaleString()}</div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function directBuyNow(id) {
+      const p = allProducts.find(item => item.id === id);
+      if (p && getProductTotalStock(p) <= 0) {
+        showStoreToast('প্রোডাক্টটি বর্তমানে স্টকে নেই!', true);
+        return;
+      }
+      if (p) {
+        sessionStorage.setItem('instant_checkout_item', JSON.stringify({ ...p, id: id }));
+      }
+      window.location.href = `checkout.html?id=${encodeURIComponent(id)}`;
+    }
+
+    function updateCartBadge() {
+      const cart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]');
+      const count = cart.reduce((acc, it) => acc + (it.quantity || 1), 0);
+      ['headerCartBadge', 'mobileBottomCartBadge'].forEach(elId => {
+        const el = document.getElementById(elId);
+        if (el) el.innerText = count;
+      });
+    }
+
+    function closeMenu() {
+      const menu = document.getElementById('sideMenu');
+      const backdrop = document.getElementById('sideMenuBackdrop');
+      if (menu) menu.classList.add('-translate-x-full');
+      if (backdrop) backdrop.classList.add('opacity-0', 'pointer-events-none');
+      document.body.style.overflow = '';
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById('sideMenu');
+      const backdrop = document.getElementById('sideMenuBackdrop');
+      if (!menu || !backdrop) return;
+      const isOpen = !menu.classList.contains('-translate-x-full');
+
+      if (isOpen) {
+        closeMenu();
+      } else {
+        menu.classList.remove('-translate-x-full');
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function navigateTo(view, param = null, pushState = true) {
+      closeMenu();
+
+      document.querySelectorAll('.spa-view').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById(`view-${view}`);
+      if (target) {
+        target.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+
+      if (pushState) {
+        const hash = view === 'home' ? '' : `#${view}${param ? '=' + encodeURIComponent(param) : ''}`;
+        const newUrl = window.location.pathname + hash;
+        window.history.pushState({ view: view, param: param }, '', newUrl);
+      }
+
+      if (view === 'category' && param) {
+        document.getElementById('categoryViewTitle').innerText = param;
+        const sortSelect = document.getElementById('categorySortSelect');
+        if (sortSelect) sortSelect.value = 'default';
+
+        currentCategoryProducts = allProducts.filter(p => p.category === param);
+        renderCategoryProducts(currentCategoryProducts);
+      } else if (view === 'catalog') {
+        document.getElementById('catalogViewTitle').innerText = param || 'All Products';
+        
+        let list = allProducts;
+        if (param === 'Free Delivery') {
+          list = allProducts.filter(p => p.isFreeDelivery);
+        } else if (param === 'New Arrivals') {
+          list = allProducts.slice(0, 12);
+        } else if (param && param !== 'All Products') {
+          // যদি কাস্টম কালেকশনের নাম হয় যা URL বা ড্রয়ার থেকে আসছে
+          const customCol = Object.values(allCustomCollections || {}).find(c => c && c.title === param);
+          if (customCol && Array.isArray(customCol.productIds)) {
+            const safeIds = customCol.productIds.map(String);
+            list = allProducts.filter(p => safeIds.includes(String(p.id)));
+          }
+        }
+
+        const catalogSubtitle = document.getElementById('catalogViewSubtitle');
+        if (catalogSubtitle) {
+          catalogSubtitle.innerText = `${list.length} ${list.length === 1 ? 'Item' : 'Items'} Available`;
+        }
+
+        const grid = document.getElementById('catalogProductGrid');
+        if (grid) {
+          grid.innerHTML = '';
+          if (list.length === 0) {
+            grid.innerHTML = `<div class="col-span-full py-16 text-center text-slate-400 font-medium text-xs tracking-widest uppercase">No products found</div>`;
+          } else {
+            list.forEach(p => grid.appendChild(createProductCard(p)));
+          }
+        }
+      } else if (view === 'search') {
+        const input = document.getElementById('searchInput');
+        if (input) {
+          input.value = '';
+          handleSearch('');
+          setTimeout(() => input.focus(), 150);
+        }
+      } else if (view === 'combos') {
+        renderCombosUI();
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        navigateTo('home', null, true);
+      }
+    }
+
+    window.addEventListener('popstate', (event) => {
+      // রিলস ফুলস্ক্রিন ওপেন থাকলে ব্যাক বাটনে শুধু রিলস বন্ধ হবে
+      if (isFsModalOpen) {
+        closeFullscreenReel(true);
+        return;
+      }
+
+      const menu = document.getElementById('sideMenu');
+      if (menu && !menu.classList.contains('-translate-x-full')) {
+        toggleMenu();
+        return;
+      }
+
+      if (event.state && event.state.view) {
+        navigateTo(event.state.view, event.state.param, false);
+      } else {
+        const hash = window.location.hash.replace('#', '');
+        if (hash) {
+          const [v, p] = hash.split('=');
+          navigateTo(v, p ? decodeURIComponent(p) : null, false);
+        } else {
+          navigateTo('home', null, false);
+        }
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) {
+        const [v, p] = hash.split('=');
+        const view = v || 'home';
+        const param = p ? decodeURIComponent(p) : null;
+        window.history.replaceState({ view: view, param: param }, '', window.location.href);
+        navigateTo(view, param, false);
+      } else {
+        window.history.replaceState({ view: 'home', param: null }, '', window.location.pathname);
+      }
+    });
+
+    function handleSearchInput(e) {
+      handleSearch(e.target.value);
+    }
+
+    function handleSearch(keyword) {
+      const clean = keyword.trim().toLowerCase();
+      let matched = allProducts;
+      if (clean !== '') {
+        matched = allProducts.filter(p => (p.name && p.name.toLowerCase().includes(clean)) || (p.category && p.category.toLowerCase().includes(clean)));
+      }
+      document.getElementById('searchResultCount').innerText = `${matched.length} items`;
+      const grid = document.getElementById('searchProductGrid');
+      grid.innerHTML = '';
+      matched.forEach(p => grid.appendChild(createProductCard(p)));
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('searchInput');
+      input.value = '';
+      handleSearch('');
+    }
+
+    async function openTrackOrderModal() {
+      const { value: input } = await Swal.fire({
+        title: 'অর্ডার ট্র্যাক করুন',
+        input: 'text',
+        inputPlaceholder: 'আপনার মোবাইল নম্বর লিখুন...',
+        showCancelButton: true,
+        confirmButtonText: 'Search Order',
+        confirmButtonColor: '#0F172A',
+        cancelButtonColor: '#94A3B8',
+        customClass: { popup: 'rounded-3xl p-6 font-sans' }
+      });
+      if (!input) return;
+
+      Swal.fire({ title: 'অনুসন্ধান করা হচ্ছে...', didOpen: () => Swal.showLoading() });
+      try {
+        const snap = await db.ref(`stores/${currentShop}/orders`).once('value');
+        const orders = snap.val();
+        let matched = null;
+        if (orders) {
+          const cleanQ = input.replace(/[^0-9]/g, '');
+          Object.values(orders).forEach(o => {
+            if ((o.phone || '').includes(cleanQ)) matched = o;
+          });
+        }
+        if (matched) {
+          Swal.fire({
+            icon: 'success',
+            title: 'অর্ডার পাওয়া গেছে!',
+            html: `
+              <div class="text-left bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs space-y-2 mt-2">
+                <div><b>গ্রাহক:</b> ${matched.name || ''}</div>
+                <div><b>স্ট্যাটাস:</b> <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">${matched.status || 'Pending'}</span></div>
+                <div><b>টোটাল বিল:</b> ৳${matched.totalAmount || matched.total || 0}</div>
+              </div>
+            `,
+            confirmButtonColor: '#0F172A'
+          });
+        } else {
+          Swal.fire({ icon: 'warning', title: 'পাওয়া যায়নি', text: 'এই নম্বরে কোনো অর্ডার খুঁজে পাওয়া যায়নি।', confirmButtonColor: '#0F172A' });
+        }
+      } catch(e) {
+        Swal.fire({ icon: 'error', title: 'ভুল হয়েছে', text: 'ডাটা লোড করতে সমস্যা হয়েছে।' });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCartBadge();
+      if (window.lucide) lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
