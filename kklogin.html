@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Login | KK TEXMART</title>
+  
+  <link rel="icon" type="image/jpeg" href="https://res.cloudinary.com/db6jppwqq/image/upload/v1790933307/fbvhveeektcotj2yg5gi.jpg">
+  
+  <!-- Fonts & Tailwind CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f0f2f5;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 antialiased text-zinc-900">
+
+  <!-- ক্লিন সেন্টার কার্ড -->
+  <div class="w-full max-w-[380px] bg-white rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] border border-zinc-200/80 p-8 text-center space-y-6">
+    
+    <!-- ব্র্যান্ড ও লোগো -->
+    <div class="flex flex-col items-center">
+      <img src="https://res.cloudinary.com/db6jppwqq/image/upload/v1790933307/fbvhveeektcotj2yg5gi.jpg" alt="Logo" class="w-14 h-14 rounded-2xl object-cover border border-zinc-200 shadow-sm mb-3">
+      <h1 class="text-2xl font-extrabold tracking-tight text-[#1877f2]">KK TEXMART</h1>
+    </div>
+
+    <!-- গুগল লগইন বাটন -->
+    <button type="button" onclick="loginWithGoogle()" id="btnGoogleLogin" class="w-full bg-white hover:bg-zinc-50 text-zinc-800 border border-zinc-300 hover:border-zinc-400 py-3.5 px-4 rounded-xl font-bold text-sm transition active:scale-[0.98] shadow-sm flex items-center justify-center gap-3">
+      <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+        <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+        <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.97 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+        <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+      </svg>
+      <span>Sign in with Google</span>
+    </button>
+
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCiK8ublFGr7i8JrzbtW-85C3aaujqMfR0",
+      authDomain: "kk-texmart.firebaseapp.com",
+      databaseURL: "https://kk-texmart-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "kk-texmart",
+      storageBucket: "kk-texmart.firebasestorage.app",
+      messagingSenderId: "140270212285",
+      appId: "1:140270212285:web:a0986584b35194888153d4",
+      measurementId: "G-FMSG7WRJK1"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    function getSubdomainShop() {
+      const host = window.location.hostname;
+      const parts = host.split('.');
+      if (parts.length > 2 && parts[0] !== 'www') {
+        return parts[0].toLowerCase();
+      }
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('shop') || 'kktexmart';
+    }
+
+    const currentShop = getSubdomainShop();
+    const AUTH_SESSION_KEY = `kk_admin_session_${currentShop}`;
+    const ALLOWED_ADMIN_EMAILS = ["kktexmart@gmail.com", "kktexmart1@gmail.com"];
+
+    // অ্যাডমিন অথবা অনুমোদিত স্টাফ কিনা ডাটাবেজ থেকে চেক
+    async function verifyUserAccess(user) {
+      if (!user || !user.email) return false;
+      const email = user.email.toLowerCase().trim();
+
+      // ১. সুপার অ্যাডমিন চেক
+      if (ALLOWED_ADMIN_EMAILS.includes(email)) return true;
+
+      // ২. স্টাফ ডাটাবেজ চেক
+      try {
+        const snap = await db.ref(`stores/${currentShop}/staffs`).once('value');
+        const staffs = snap.val() || {};
+        return Object.values(staffs).some(s => (s.email || '').toLowerCase().trim() === email);
+      } catch (err) {
+        console.error('Staff verify error:', err);
+        return false;
+      }
+    }
+
+    // অটো রিডাইরেক্ট যদি আগের সেশন একটিভ থাকে
+    auth.onAuthStateChanged(async user => {
+      if (user) {
+        const hasAccess = await verifyUserAccess(user);
+        if (hasAccess) {
+          localStorage.setItem(AUTH_SESSION_KEY, 'active_auth_token_' + user.uid);
+          window.location.replace(`admin.html${window.location.search}`);
+        }
+      }
+    });
+
+    async function loginWithGoogle() {
+      const btn = document.getElementById('btnGoogleLogin');
+      btn.disabled = true;
+      btn.innerHTML = `<div class="w-4 h-4 border-2 border-zinc-900 border-t-transparent rounded-full animate-spin"></div> <span>Signing in...</span>`;
+
+      const provider = new firebase.auth.GoogleAuthProvider();
+
+      try {
+        const result = await auth.signInWithPopup(provider);
+        const user = result.user;
+
+        const hasAccess = await verifyUserAccess(user);
+
+        if (hasAccess) {
+          localStorage.setItem(AUTH_SESSION_KEY, 'active_auth_token_' + user.uid);
+          window.location.replace(`admin.html${window.location.search}`);
+        } else {
+          await auth.signOut();
+          localStorage.removeItem(AUTH_SESSION_KEY);
+          btn.disabled = false;
+          btn.innerHTML = `<span>Sign in with Google</span>`;
+          Swal.fire({
+            icon: 'error',
+            title: 'Access Denied',
+            text: 'Your email is not registered as admin or staff.'
+          });
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Sign in with Google</span>`;
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: err.message
+        });
+      }
+    }
+  </script>
+</body>
+</html>
