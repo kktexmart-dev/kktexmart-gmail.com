@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>KK TEXMART | Management</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #09090b;
+      letter-spacing: -0.015em;
+      -webkit-font-smoothing: antialiased;
+    }
+    .tabular-nums { font-variant-numeric: tabular-nums; }
+    .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-zinc-900 selection:text-white">
+
+  <!-- Toast -->
+  <div id="toastContainer" class="fixed top-5 right-5 z-[9999] flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Loader -->
+  <div id="globalLoader" class="fixed inset-0 bg-zinc-950/35 backdrop-blur-xs z-[10000] hidden items-center justify-center">
+    <div class="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+  </div>
+
+  <!-- Google Auth Screen -->
+  <div id="authView" class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-sm bg-white border border-zinc-200 rounded-2xl p-8 space-y-6 shadow-xs">
+      <div class="space-y-1">
+        <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400 block">KK TEXMART</span>
+        <h1 class="text-lg font-extrabold text-zinc-950 tracking-tight">Management Console</h1>
+      </div>
+
+      <div id="authErrorBox" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-700"></div>
+
+      <button type="button" onclick="signInWithGoogle()" class="w-full h-11 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2.5">
+        <svg class="w-4 h-4" viewBox="0 0 24 24">
+          <path fill="#ffffff" d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81Z"/>
+        </svg>
+        <span>Continue with Google</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Workspace -->
+  <div id="appView" class="hidden min-h-screen flex-col">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-zinc-200 sticky top-0 z-30">
+      <div class="max-w-7xl mx-auto px-4 sm:px-8 h-14 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-6 min-w-0">
+          <span class="font-extrabold text-sm tracking-tight text-zinc-950 shrink-0" id="brandHeaderName">KK TEXMART</span>
+
+          <nav class="hidden sm:flex items-center gap-1">
+            <button onclick="switchModule('employees')" id="tabBtn-employees" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition">
+              Employees <span id="dueNavCount" class="hidden ml-1 px-1.5 py-0.2 rounded-full bg-rose-600 text-white text-[10px] font-mono">0</span>
+            </button>
+            <button onclick="switchModule('suppliers')" id="tabBtn-suppliers" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition">
+              Suppliers
+            </button>
+            <button onclick="switchModule('stock')" id="tabBtn-stock" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition">
+              Stock
+            </button>
+          </nav>
+        </div>
+
+        <div class="flex items-center gap-3 shrink-0">
+          <span id="signedUserEmail" class="hidden md:inline text-[11px] font-mono text-zinc-500"></span>
+          <button onclick="signOutUser()" class="px-3 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-400 text-xs font-semibold text-zinc-700 transition">
+            Sign Out
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Tabs -->
+      <div class="sm:hidden border-t border-zinc-100 px-4 py-2 flex items-center gap-2 overflow-x-auto no-scrollbar">
+        <button onclick="switchModule('employees')" id="mobBtn-employees" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center transition">
+          Employees <span id="dueMobCount" class="hidden ml-1 px-1.5 rounded-full bg-rose-600 text-white text-[10px] font-mono">0</span>
+        </button>
+        <button onclick="switchModule('suppliers')" id="mobBtn-suppliers" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center transition">
+          Suppliers
+        </button>
+        <button onclick="switchModule('stock')" id="mobBtn-stock" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-center transition">
+          Stock
+        </button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="max-w-7xl mx-auto w-full p-4 sm:p-8 flex-1">
+
+      <!-- ==================== MODULE 1: EMPLOYEES ==================== -->
+      <section id="module-employees" class="space-y-6">
+
+        <!-- Salary Due Alerts -->
+        <div id="salaryAlertBanner" class="hidden bg-white border border-rose-200 rounded-2xl p-4 sm:p-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-rose-700">Salary Due</span>
+            <span id="salaryAlertTotal" class="text-xs font-mono font-bold text-rose-700"></span>
+          </div>
+          <div id="salaryAlertList" class="divide-y divide-zinc-100"></div>
+        </div>
+
+        <!-- Top Metrics -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="bg-white border border-zinc-200 rounded-xl p-4">
+            <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Total Staff</span>
+            <span id="empStatTotal" class="text-xl font-extrabold font-mono text-zinc-950 mt-1 block tabular-nums">0</span>
+          </div>
+          <div class="bg-white border border-zinc-200 rounded-xl p-4">
+            <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Monthly Payroll</span>
+            <span id="empStatPayroll" class="text-xl font-extrabold font-mono text-zinc-950 mt-1 block tabular-nums">BDT 0</span>
+          </div>
+          <div class="bg-white border border-zinc-200 rounded-xl p-4">
+            <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Paid This Month</span>
+            <span id="empStatPaid" class="text-xl font-extrabold font-mono text-emerald-700 mt-1 block tabular-nums">BDT 0</span>
+          </div>
+          <div class="bg-white border border-zinc-200 rounded-xl p-4">
+            <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Due This Month</span>
+            <span id="empStatDue" class="text-xl font-extrabold font-mono text-rose-600 mt-1 block tabular-nums">BDT 0</span>
+          </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-2 flex-1">
+            <div class="flex-1 max-w-xs">
+              <input type="text" id="empSearchInput" oninput="renderEmployees()" aria-label="Search" class="w-full h-9 bg-white border border-zinc-200 focus:border-zinc-900 rounded-xl px-3.5 text-xs outline-none font-medium">
+            </div>
+            <select id="empFilterStatus" onchange="renderEmployees()" class="h-9 bg-white border border-zinc-200 rounded-xl px-3 text-xs font-semibold text-zinc-800 outline-none">
+              <option value="all">All</option>
+              <option value="due">Due</option>
+              <option value="paid">Paid</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+          <button onclick="openEmployeeModal()" class="h-9 px-4 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl text-xs font-bold transition shrink-0">
+            Add Employee
+          </button>
+        </div>
+
+        <!-- Employees List -->
+        <div id="employeesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      </section>
+
+      <!-- ==================== MODULE 2: SUPPLIERS ==================== -->
+      <section id="module-suppliers" class="hidden space-y-6">
+
+        <!-- Suppliers List View -->
+        <div id="suppliersListView" class="space-y-6">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-white border border-zinc-200 rounded-xl p-4">
+              <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Suppliers</span>
+              <span id="supStatCount" class="text-xl font-extrabold font-mono text-zinc-950 mt-1 block tabular-nums">0</span>
+            </div>
+            <div class="bg-white border border-zinc-200 rounded-xl p-4">
+              <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Total Purchase</span>
+              <span id="supStatPurchase" class="text-xl font-extrabold font-mono text-zinc-950 mt-1 block tabular-nums">BDT 0</span>
+            </div>
+            <div class="bg-white border border-zinc-200 rounded-xl p-4">
+              <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Total Paid</span>
+              <span id="supStatPaid" class="text-xl font-extrabold font-mono text-emerald-700 mt-1 block tabular-nums">BDT 0</span>
+            </div>
+            <div class="bg-white border border-zinc-200 rounded-xl p-4">
+              <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Total Payable</span>
+              <span id="supStatDue" class="text-xl font-extrabold font-mono text-rose-600 mt-1 block tabular-nums">BDT 0</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex-1 max-w-xs">
+              <input type="text" id="supSearchInput" oninput="renderSuppliersList()" aria-label="Search" class="w-full h-9 bg-white border border-zinc-200 focus:border-zinc-900 rounded-xl px-3.5 text-xs outline-none font-medium">
+            </div>
+            <button onclick="openSupplierModal()" class="h-9 px-4 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl text-xs font-bold transition shrink-0">
+              Add Supplier
+            </button>
+          </div>
+
+          <div id="suppliersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- Supplier Detail & Ledger View -->
+        <div id="supplierDetailView" class="hidden space-y-6">
+          <div class="bg-white border border-zinc-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5 min-w-0">
+              <button onclick="closeSupplierDetail()" class="h-9 px-3 rounded-xl border border-zinc-200 hover:border-zinc-900 text-xs font-bold text-zinc-800 transition shrink-0">
+                Back
+              </button>
+              <div id="supDetailImgWrap" class="w-11 h-11 rounded-xl bg-zinc-100 border border-zinc-200 overflow-hidden shrink-0 flex items-center justify-center font-bold text-sm text-zinc-700"></div>
+              <div class="min-w-0">
+                <h2 id="supDetailName" class="text-base font-extrabold text-zinc-950 truncate"></h2>
+                <p id="supDetailMeta" class="text-xs text-zinc-500 font-mono truncate"></p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 flex-wrap">
+              <button onclick="openSupplyEntryModal()" class="h-9 px-3.5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl text-xs font-bold transition">
+                Add Supply
+              </button>
+              <button onclick="openSupplierPaymentModal()" class="h-9 px-3.5 bg-white border border-zinc-300 hover:border-zinc-950 text-zinc-900 rounded-xl text-xs font-bold transition">
+                Pay Due
+              </button>
+              <button onclick="editCurrentSupplier()" class="h-9 px-3 bg-white border border-zinc-200 hover:border-zinc-400 text-zinc-700 rounded-xl text-xs font-semibold transition">
+                Edit
+              </button>
+              <button onclick="deleteCurrentSupplier()" class="h-9 px-3 bg-white border border-rose-200 hover:bg-rose-50 text-rose-600 rounded-xl text-xs font-semibold transition">
+                Delete
+              </button>
+            </div>
+          </div>
+
+          <!-- Month Filter & Metrics -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <select id="supMonthMode" onchange="renderSupplierDetail()" class="h-9 bg-white border border-zinc-200 rounded-xl px-3 text-xs font-bold text-zinc-800 outline-none">
+                <option value="month">This Month</option>
+                <option value="custom">Select Month</option>
+                <option value="all">All Time</option>
+              </select>
+              <input type="month" id="supCustomMonth" onchange="renderSupplierDetail()" class="hidden h-9 bg-white border border-zinc-200 rounded-xl px-3 text-xs font-mono font-bold text-zinc-800 outline-none">
+            </div>
+            <div class="text-xs font-semibold text-zinc-500">
+              Total Payable Balance: <span id="supDetailAllTimeDue" class="font-mono font-extrabold text-rose-600 text-sm ml-1 tabular-nums">BDT 0</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-white border border-zinc-200 rounded-xl p-4">
+              <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Units Supplied</span>
+              <span id="supDetailQty" class="text-xl font-extrabold font-mono text-zinc-950 mt-1 block tabular-nums">0</span>
+            </div>
+            <div class="bg-white border border-zinc-200 rounded-xl p-4">
+              <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Purchase Amount</span>
+              <span id="supDetailTotal" class="text-xl font-extrabold font-mono text-zinc-950 mt-1 block tabular-nums">BDT 0</span>
+            </div>
+            <div class="bg-white border border-zinc-200 rounded-xl p-4">
+              <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Paid Amount</span>
+              <span id="supDetailPaid" class="text-xl font-extrabold font-mono text-emerald-700 mt-1 block tabular-nums">BDT 0</span>
+            </div>
+            <div class="bg-white border border-zinc-200 rounded-xl p-4">
+              <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Period Due</span>
+              <span id="supDetailPeriodDue" class="text-xl font-extrabold font-mono text-rose-600 mt-1 block tabular-nums">BDT 0</span>
+            </div>
+          </div>
+
+          <!-- Ledger Table -->
+          <div class="bg-white border border-zinc-200 rounded-2xl overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-zinc-50 border-b border-zinc-200 text-zinc-500 font-bold uppercase tracking-wider text-[10px]">
+                  <tr>
+                    <th class="p-3.5 pl-4">Date</th>
+                    <th class="p-3.5">Type</th>
+                    <th class="p-3.5">Item / Note</th>
+                    <th class="p-3.5 text-center">Qty</th>
+                    <th class="p-3.5 text-right">Total</th>
+                    <th class="p-3.5 text-right">Paid</th>
+                    <th class="p-3.5 text-right">Due</th>
+                    <th class="p-3.5 text-right pr-4">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="supLedgerTableBody" class="divide-y divide-zinc-100 font-medium text-zinc-800"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== MODULE 3: STOCK MANAGEMENT ==================== -->
+      <section id="module-stock" class="hidden space-y-6">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="bg-white border border-zinc-200 rounded-xl p-4">
+            <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Products</span>
+            <span id="stkStatProducts" class="text-xl font-extrabold font-mono text-zinc-950 mt-1 block tabular-nums">0</span>
+          </div>
+          <div class="bg-white border border-zinc-200 rounded-xl p-4">
+            <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Total Units</span>
+            <span id="stkStatUnits" class="text-xl font-extrabold font-mono text-zinc-950 mt-1 block tabular-nums">0</span>
+          </div>
+          <div class="bg-white border border-zinc-200 rounded-xl p-4">
+            <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Categories</span>
+            <span id="stkStatCategories" class="text-xl font-extrabold font-mono text-zinc-950 mt-1 block tabular-nums">0</span>
+          </div>
+          <div class="bg-white border border-zinc-200 rounded-xl p-4">
+            <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Low Stock</span>
+            <span id="stkStatLow" class="text-xl font-extrabold font-mono text-rose-600 mt-1 block tabular-nums">0</span>
+          </div>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div id="stockCategoryPills" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1"></div>
+          <div class="flex items-center gap-2 shrink-0">
+            <input type="text" id="stockSearchInput" oninput="renderStockList()" aria-label="Search" class="w-44 sm:w-56 h-9 bg-white border border-zinc-200 focus:border-zinc-900 rounded-xl px-3.5 text-xs outline-none font-medium">
+            <label class="h-9 px-3 bg-white border border-zinc-200 rounded-xl flex items-center gap-2 text-xs font-semibold text-zinc-700 cursor-pointer select-none">
+              <input type="checkbox" id="stockLowOnlyCb" onchange="renderStockList()" class="w-3.5 h-3.5 rounded text-zinc-950">
+              <span>Low Stock</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Stock Items -->
+        <div id="stockListContainer" class="space-y-3"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== MODAL: ADD / EDIT EMPLOYEE ==================== -->
+  <div id="employeeModal" class="fixed inset-0 z-50 bg-zinc-950/50 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl border border-zinc-200 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
+      <div class="px-6 py-4 border-b border-zinc-100 flex items-center justify-between">
+        <h3 id="empModalTitle" class="text-sm font-extrabold text-zinc-950">Add Employee</h3>
+        <button onclick="closeModal('employeeModal')" class="text-xs font-bold text-zinc-400 hover:text-zinc-950">Close</button>
+      </div>
+
+      <div class="p-6 space-y-4 overflow-y-auto custom-scroll flex-1 text-xs">
+        <div class="flex items-center gap-4">
+          <div id="empPhotoPreview" class="w-16 h-16 rounded-xl bg-zinc-100 border border-zinc-200 overflow-hidden shrink-0 flex items-center justify-center text-zinc-400 font-bold"></div>
+          <div class="flex items-center gap-2">
+            <label class="px-3.5 py-2 rounded-xl border border-zinc-200 hover:border-zinc-900 bg-white cursor-pointer font-bold text-zinc-800 transition">
+              <span>Upload Photo</span>
+              <input type="file" id="empPhotoInput" accept="image/*" class="hidden" onchange="uploadEmployeePhoto(this)">
+            </label>
+            <button type="button" id="empRemovePhotoBtn" onclick="clearEmployeePhoto()" class="hidden px-3 py-2 rounded-xl text-rose-600 font-semibold hover:bg-rose-50">Remove</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-zinc-700 mb-1">Full Name *</label>
+            <input type="text" id="empName" class="w-full h-9 bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-zinc-900 rounded-xl px-3 outline-none font-medium">
+          </div>
+          <div>
+            <label class="block font-bold text-zinc-700 mb-1">Mobile Number *</label>
+            <input type="text" id="empPhone" class="w-full h-9 bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-zinc-900 rounded-xl px-3 outline-none font-mono font-semibold">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Address</label>
+          <textarea id="empAddress" rows="2" class="w-full bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-zinc-900 rounded-xl p-2.5 outline-none font-medium"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-zinc-700 mb-1">Designation / Work *</label>
+            <input type="text" id="empRole" class="w-full h-9 bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-zinc-900 rounded-xl px-3 outline-none font-medium">
+          </div>
+          <div>
+            <label class="block font-bold text-zinc-700 mb-1">Monthly Salary (BDT) *</label>
+            <input type="number" id="empSalary" min="0" class="w-full h-9 bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-zinc-900 rounded-xl px-3 outline-none font-mono font-bold">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block font-bold text-zinc-700 mb-1">Salary Day (1-31) *</label>
+            <input type="number" id="empPayDay" min="1" max="31" class="w-full h-9 bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-zinc-900 rounded-xl px-3 outline-none font-mono font-bold">
+          </div>
+          <div>
+            <label class="block font-bold text-zinc-700 mb-1">Joining Date</label>
+            <input type="date" id="empJoinDate" class="w-full h-9 bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-zinc-900 rounded-xl px-3 outline-none font-mono">
+          </div>
+          <div>
+            <label class="block font-bold text-zinc-700 mb-1">Status</label>
+            <select id="empStatus" class="w-full h-9 bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-zinc-900 rounded-xl px-3 outline-none font-semibold">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-6 py-4 bg-zinc-50 border-t border-zinc-100 flex justify-end gap-2">
+        <button onclick="closeModal('employeeModal')" class="h-9 px-4 rounded-xl text-xs font-semibold text-zinc-600">Cancel</button>
+        <button onclick="saveEmployee()" class="h-9 px-5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl text-xs font-bold">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: EMPLOYEE BIODATA & SALARY HISTORY ==================== -->
+  <div id="empDetailModal" class="fixed inset-0 z-50 bg-zinc-950/50 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl border border-zinc-200 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
+      <div class="px-6 py-4 border-b border-zinc-100 flex items-center justify-between">
+        <h3 class="text-sm font-extrabold text-zinc-950">Employee Biodata</h3>
+        <button onclick="closeModal('empDetailModal')" class="text-xs font-bold text-zinc-400 hover:text-zinc-950">Close</button>
+      </div>
+      <div id="empDetailBody" class="p-6 space-y-5 overflow-y-auto custom-scroll flex-1 text-xs"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: PAY SALARY ==================== -->
+  <div id="paySalaryModal" class="fixed inset-0 z-50 bg-zinc-950/50 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-sm rounded-t-2xl sm:rounded-2xl border border-zinc-200 shadow-2xl p-6 space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-zinc-100 pb-3">
+        <h3 class="text-sm font-extrabold text-zinc-950">Record Salary Payment</h3>
+        <button onclick="closeModal('paySalaryModal')" class="font-bold text-zinc-400 hover:text-zinc-950">Close</button>
+      </div>
+      <div class="space-y-3">
+        <div>
+          <span class="text-zinc-400 font-semibold block">Employee</span>
+          <span id="payEmpNameLabel" class="font-extrabold text-sm text-zinc-950"></span>
+        </div>
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Salary Month</label>
+          <input type="month" id="payMonthInput" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 font-mono font-bold outline-none">
+        </div>
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Amount (BDT)</label>
+          <input type="number" id="payAmountInput" min="0" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 font-mono font-bold outline-none">
+        </div>
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Payment Date</label>
+          <input type="date" id="payDateInput" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 font-mono outline-none">
+        </div>
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Note</label>
+          <input type="text" id="payNoteInput" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 outline-none">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-zinc-100">
+        <button onclick="closeModal('paySalaryModal')" class="h-9 px-4 rounded-xl font-semibold text-zinc-600">Cancel</button>
+        <button onclick="confirmSalaryPayment()" class="h-9 px-5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl font-bold">Confirm Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ADD / EDIT SUPPLIER ==================== -->
+  <div id="supplierModal" class="fixed inset-0 z-50 bg-zinc-950/50 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md rounded-t-2xl sm:rounded-2xl border border-zinc-200 shadow-2xl p-6 space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-zinc-100 pb-3">
+        <h3 id="supModalTitle" class="text-sm font-extrabold text-zinc-950">Add Supplier</h3>
+        <button onclick="closeModal('supplierModal')" class="font-bold text-zinc-400 hover:text-zinc-950">Close</button>
+      </div>
+
+      <div class="space-y-3">
+        <div class="flex items-center gap-4">
+          <div id="supPhotoPreview" class="w-14 h-14 rounded-xl bg-zinc-100 border border-zinc-200 overflow-hidden shrink-0 flex items-center justify-center text-zinc-400 font-bold"></div>
+          <div class="flex items-center gap-2">
+            <label class="px-3 py-1.5 rounded-xl border border-zinc-200 hover:border-zinc-900 bg-white cursor-pointer font-bold text-zinc-800 transition">
+              <span>Optional Image</span>
+              <input type="file" id="supPhotoInput" accept="image/*" class="hidden" onchange="uploadSupplierPhoto(this)">
+            </label>
+            <button type="button" id="supRemovePhotoBtn" onclick="clearSupplierPhoto()" class="hidden px-2.5 py-1.5 rounded-xl text-rose-600 font-semibold hover:bg-rose-50">Remove</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Supplier Name *</label>
+          <input type="text" id="supNameInput" class="w-full h-9 bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-zinc-900 rounded-xl px-3 outline-none font-medium">
+        </div>
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Mobile Number</label>
+          <input type="text" id="supPhoneInput" class="w-full h-9 bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-zinc-900 rounded-xl px-3 outline-none font-mono">
+        </div>
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Address</label>
+          <textarea id="supAddressInput" rows="2" class="w-full bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-zinc-900 rounded-xl p-2.5 outline-none font-medium"></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t border-zinc-100">
+        <button onclick="closeModal('supplierModal')" class="h-9 px-4 rounded-xl font-semibold text-zinc-600">Cancel</button>
+        <button onclick="saveSupplier()" class="h-9 px-5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl font-bold">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ADD / EDIT SUPPLY ENTRY ==================== -->
+  <div id="supplyEntryModal" class="fixed inset-0 z-50 bg-zinc-950/50 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md rounded-t-2xl sm:rounded-2xl border border-zinc-200 shadow-2xl p-6 space-y-4 text-xs max-h-[92vh] overflow-y-auto custom-scroll">
+      <div class="flex items-center justify-between border-b border-zinc-100 pb-3">
+        <h3 id="supplyEntryTitle" class="text-sm font-extrabold text-zinc-950">Add Supply</h3>
+        <button onclick="closeModal('supplyEntryModal')" class="font-bold text-zinc-400 hover:text-zinc-950">Close</button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Date *</label>
+          <input type="date" id="supEntryDate" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 font-mono outline-none">
+        </div>
+
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Store Product (Optional)</label>
+          <select id="supEntryProductSelect" onchange="onSupplyProductSelect()" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 font-medium outline-none"></select>
+        </div>
+
+        <label id="supSyncStockWrap" class="hidden flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-200 bg-zinc-50 cursor-pointer">
+          <input type="checkbox" id="supSyncStockCb" checked class="w-4 h-4 rounded text-zinc-950">
+          <span class="font-semibold text-zinc-800">Add quantity to store stock</span>
+        </label>
+
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Item / Product Name *</label>
+          <input type="text" id="supEntryItemName" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 font-medium outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-zinc-700 mb-1">Quantity *</label>
+            <input type="number" id="supEntryQty" min="0" oninput="calcSupplyTotal()" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 font-mono font-bold outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-zinc-700 mb-1">Unit Cost (BDT)</label>
+            <input type="number" id="supEntryUnitPrice" min="0" oninput="calcSupplyTotal()" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 font-mono font-bold outline-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-zinc-700 mb-1">Total Cost (BDT) *</label>
+            <input type="number" id="supEntryTotal" min="0" oninput="calcSupplyDuePreview()" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 font-mono font-bold outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-zinc-700 mb-1">Paid Now (BDT)</label>
+            <input type="number" id="supEntryPaid" min="0" oninput="calcSupplyDuePreview()" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 font-mono font-bold outline-none">
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center justify-between">
+          <span class="font-semibold text-zinc-600">Due Balance</span>
+          <span id="supEntryDuePreview" class="font-mono font-extrabold text-rose-600">BDT 0</span>
+        </div>
+
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Note</label>
+          <input type="text" id="supEntryNote" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 outline-none">
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t border-zinc-100">
+        <button onclick="closeModal('supplyEntryModal')" class="h-9 px-4 rounded-xl font-semibold text-zinc-600">Cancel</button>
+        <button onclick="saveSupplyEntry()" class="h-9 px-5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl font-bold">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: SUPPLIER DUE PAYMENT ==================== -->
+  <div id="supplierPayModal" class="fixed inset-0 z-50 bg-zinc-950/50 backdrop-blur-xs hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-sm rounded-t-2xl sm:rounded-2xl border border-zinc-200 shadow-2xl p-6 space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-zinc-100 pb-3">
+        <h3 class="text-sm font-extrabold text-zinc-950">Supplier Payment</h3>
+        <button onclick="closeModal('supplierPayModal')" class="font-bold text-zinc-400 hover:text-zinc-950">Close</button>
+      </div>
+      <div class="space-y-3">
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Date *</label>
+          <input type="date" id="supPayDate" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 font-mono outline-none">
+        </div>
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Paid Amount (BDT) *</label>
+          <input type="number" id="supPayAmount" min="0" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 font-mono font-bold outline-none">
+        </div>
+        <div>
+          <label class="block font-bold text-zinc-700 mb-1">Note</label>
+          <input type="text" id="supPayNote" class="w-full h-9 bg-zinc-50 border border-zinc-200 rounded-xl px-3 outline-none">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-zinc-100">
+        <button onclick="closeModal('supplierPayModal')" class="h-9 px-4 rounded-xl font-semibold text-zinc-600">Cancel</button>
+        <button onclick="saveSupplierPayment()" class="h-9 px-5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl font-bold">Confirm Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function getSubdomainShop() {
+      const host = window.location.hostname;
+      const parts = host.split('.');
+      if (parts.length > 2 && parts[0] !== 'www') return parts[0].toLowerCase();
+      return new URLSearchParams(window.location.search).get('shop') || 'kktexmart';
+    }
+
+    const currentShop = getSubdomainShop();
+    const CLOUDINARY_CLOUD_NAME = 'db6jppwqq';
+    const CLOUDINARY_UPLOAD_PRESET = 'ml_default';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCiK8ublFGr7i8JrzbtW-85C3aaujqMfR0",
+      authDomain: "kk-texmart.firebaseapp.com",
+      databaseURL: "https://kk-texmart-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "kk-texmart",
+      storageBucket: "kk-texmart.firebasestorage.app",
+      messagingSenderId: "140270212285",
+      appId: "1:140270212285:web:a0986584b35194888153d4",
+      measurementId: "G-FMSG7WRJK1"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const auth = firebase.auth();
+
+    const ALLOWED_ADMIN_EMAILS = ['kktexmart@gmail.com', 'kktexmart1@gmail.com'];
+
+    const PATHS = {
+      employees: `stores/${currentShop}/employees`,
+      employeePayments: `stores/${currentShop}/employeePayments`,
+      suppliers: `stores/${currentShop}/suppliers`,
+      supplierEntries: `stores/${currentShop}/supplierEntries`,
+      products: `stores/${currentShop}/products`,
+      categories: `stores/${currentShop}/categories`,
+      settings: `stores/${currentShop}/settings`
+    };
+
+    let allEmployees = {};
+    let allEmployeePayments = {};
+    let allSuppliers = {};
+    let allSupplierEntries = {};
+    let allProducts = {};
+    let allCategories = {};
+
+    let activeModule = 'employees';
+    let editingEmployeeId = null;
+    let pendingEmpPhoto = '';
+    let payingEmployeeId = null;
+
+    let editingSupplierId = null;
+    let pendingSupPhoto = '';
+    let activeSupplierId = null;
+    let editingSupplyEntryId = null;
+
+    let selectedStockCategory = 'All';
+    let listenersAttached = false;
+
+    // ==================== AUTH ====================
+    function showLoader() {
+      const l = document.getElementById('globalLoader');
+      l.classList.remove('hidden');
+      l.classList.add('flex');
+    }
+    function hideLoader() {
+      const l = document.getElementById('globalLoader');
+      l.classList.add('hidden');
+      l.classList.remove('flex');
+    }
+
+    function showToast(msg, isError = false) {
+      const c = document.getElementById('toastContainer');
+      const el = document.createElement('div');
+      el.className = `pointer-events-auto px-4 py-2.5 rounded-xl border text-xs font-bold shadow-sm bg-white ${
+        isError ? 'border-rose-200 text-rose-700' : 'border-zinc-200 text-zinc-950'
+      }`;
+      el.innerText = msg;
+      c.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transition = 'opacity 0.2s ease';
+        setTimeout(() => el.remove(), 200);
+      }, 2400);
+    }
+
+    async function signInWithGoogle() {
+      const errBox = document.getElementById('authErrorBox');
+      errBox.classList.add('hidden');
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+      showLoader();
+      try {
+        await auth.signInWithPopup(provider);
+      } catch (err) {
+        if (err.code === 'auth/popup-blocked') {
+          await auth.signInWithRedirect(provider);
+        } else {
+          errBox.innerText = err.message || 'Sign in failed';
+          errBox.classList.remove('hidden');
+        }
+      } finally {
+        hideLoader();
+      }
+    }
+
+    function signOutUser() {
+      auth.signOut();
+    }
+
+    auth.onAuthStateChanged(user => {
+      const authView = document.getElementById('authView');
+      const appView = document.getElementById('appView');
+      const errBox = document.getElementById('authErrorBox');
+
+      if (!user) {
+        authView.classList.remove('hidden');
+        appView.classList.add('hidden');
+        appView.classList.remove('flex');
+        return;
+      }
+
+      const email = (user.email || '').toLowerCase().trim();
+      if (!ALLOWED_ADMIN_EMAILS.includes(email)) {
+        auth.signOut();
+        errBox.innerText = `Access denied for ${email}`;
+        errBox.classList.remove('hidden');
+        authView.classList.remove('hidden');
+        appView.classList.add('hidden');
+        appView.classList.remove('flex');
+        return;
+      }
+
+      document.getElementById('signedUserEmail').innerText = email;
+      authView.classList.add('hidden');
+      appView.classList.remove('hidden');
+      appView.classList.add('flex');
+
+      if (!listenersAttached) {
+        listenersAttached = true;
+        initRealtimeListeners();
+      }
+      switchModule(activeModule);
+    });
+
+    function initRealtimeListeners() {
+      db.ref(PATHS.settings).on('value', snap => {
+        const s = snap.val();
+        if (s && s.storeName) {
+          document.getElementById('brandHeaderName').innerText = s.storeName;
+          document.title = `${s.storeName} | Management`;
+        }
+      });
+
+      db.ref(PATHS.employees).on('value', snap => {
+        allEmployees = snap.val() || {};
+        renderEmployees();
+      });
+
+      db.ref(PATHS.employeePayments).on('value', snap => {
+        allEmployeePayments = snap.val() || {};
+        renderEmployees();
+      });
+
+      db.ref(PATHS.suppliers).on('value', snap => {
+        allSuppliers = snap.val() || {};
+        renderSuppliersList();
+        if (activeSupplierId) renderSupplierDetail();
+      });
+
+      db.ref(PATHS.supplierEntries).on('value', snap => {
+        allSupplierEntries = snap.val() || {};
+        renderSuppliersList();
+        if (activeSupplierId) renderSupplierDetail();
+      });
+
+      db.ref(PATHS.categories).on('value', snap => {
+        allCategories = snap.val() || {};
+        renderStockList();
+      });
+
+      db.ref(PATHS.products).on('value', snap => {
+        allProducts = snap.val() || {};
+        renderStockList();
+      });
+    }
+
+    function switchModule(mod) {
+      activeModule = mod;
+      ['employees', 'suppliers', 'stock'].forEach(m => {
+        const sec = document.getElementById(`module-${m}`);
+        const tBtn = document.getElementById(`tabBtn-${m}`);
+        const mBtn = document.getElementById(`mobBtn-${m}`);
+        const isOn = m === mod;
+
+        if (sec) sec.classList.toggle('hidden', !isOn);
+        if (tBtn) {
+          tBtn.className = isOn
+            ? 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-zinc-950 text-white transition'
+            : 'px-3.5 py-1.5 rounded-lg text-xs font-semibold text-zinc-500 hover:text-zinc-950 hover:bg-zinc-100 transition';
+        }
+        if (mBtn) {
+          mBtn.className = isOn
+            ? 'flex-1 py-1.5 rounded-lg text-xs font-bold text-center bg-zinc-950 text-white transition'
+            : 'flex-1 py-1.5 rounded-lg text-xs font-semibold text-center text-zinc-500 transition';
+        }
+      });
+    }
+
+    async function uploadToCloudinary(file) {
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: fd
+      });
+      if (!res.ok) throw new Error('Upload failed');
+      const data = await res.json();
+      return data.secure_url;
+    }
+
+    function openModal(id) {
+      document.getElementById(id)?.classList.remove('hidden');
+    }
+    function closeModal(id) {
+      document.getElementById(id)?.classList.add('hidden');
+    }
+
+    function getCurrentMonthKey() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    }
+
+    function getTodayISO() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // ==================== MODULE 1: EMPLOYEES & SALARY ====================
+    function isEmployeePaidForMonth(empId, monthKey) {
+      const emp = allEmployees[empId];
+      if (emp && emp.lastPaidMonth === monthKey) return true;
+      return Object.values(allEmployeePayments).some(p => p.employeeId === empId && p.monthKey === monthKey);
+    }
+
+    function getEmployeeSalaryState(empId, emp) {
+      if ((emp.status || 'Active') === 'Inactive') return 'inactive';
+      const currentMonth = getCurrentMonthKey();
+      if (isEmployeePaidForMonth(empId, currentMonth)) return 'paid';
+
+      const now = new Date();
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const payDay = Math.min(daysInMonth, Math.max(1, Number(emp.payDay) || 1));
+      const today = now.getDate();
+
+      if (today >= payDay) return 'due';
+      if (payDay - today <= 2) return 'upcoming';
+      return 'scheduled';
+    }
+
+    async function uploadEmployeePhoto(input) {
+      const file = input.files[0];
+      if (!file) return;
+      showLoader();
+      try {
+        pendingEmpPhoto = await uploadToCloudinary(file);
+        renderEmpPhotoPreview();
+        showToast('Photo uploaded');
+      } catch (e) {
+        showToast('Upload failed', true);
+      } finally {
+        hideLoader();
+        input.value = '';
+      }
+    }
+
+    function clearEmployeePhoto() {
+      pendingEmpPhoto = '';
+      renderEmpPhotoPreview();
+    }
+
+    function renderEmpPhotoPreview() {
+      const box = document.getElementById('empPhotoPreview');
+      const btn = document.getElementById('empRemovePhotoBtn');
+      if (pendingEmpPhoto) {
+        box.innerHTML = `<img src="${pendingEmpPhoto}" class="w-full h-full object-cover">`;
+        btn.classList.remove('hidden');
+      } else {
+        const nm = (document.getElementById('empName').value || 'E').trim();
+        box.innerHTML = nm.charAt(0).toUpperCase();
+        btn.classList.add('hidden');
+      }
+    }
+
+    function openEmployeeModal(empId = null) {
+      editingEmployeeId = empId;
+      const title = document.getElementById('empModalTitle');
+
+      if (empId && allEmployees[empId]) {
+        const e = allEmployees[empId];
+        title.innerText = 'Edit Employee';
+        document.getElementById('empName').value = e.name || '';
+        document.getElementById('empPhone').value = e.phone || '';
+        document.getElementById('empAddress').value = e.address || '';
+        document.getElementById('empRole').value = e.role || '';
+        document.getElementById('empSalary').value = e.salary || '';
+        document.getElementById('empPayDay').value = e.payDay || 1;
+        document.getElementById('empJoinDate').value = e.joinDate || '';
+        document.getElementById('empStatus').value = e.status || 'Active';
+        pendingEmpPhoto = e.photoUrl || '';
+      } else {
+        title.innerText = 'Add Employee';
+        document.getElementById('empName').value = '';
+        document.getElementById('empPhone').value = '';
+        document.getElementById('empAddress').value = '';
+        document.getElementById('empRole').value = '';
+        document.getElementById('empSalary').value = '';
+        document.getElementById('empPayDay').value = '1';
+        document.getElementById('empJoinDate').value = getTodayISO();
+        document.getElementById('empStatus').value = 'Active';
+        pendingEmpPhoto = '';
+      }
+
+      renderEmpPhotoPreview();
+      openModal('employeeModal');
+    }
+
+    function saveEmployee() {
+      const name = document.getElementById('empName').value.trim();
+      const phone = document.getElementById('empPhone').value.trim();
+      const address = document.getElementById('empAddress').value.trim();
+      const role = document.getElementById('empRole').value.trim();
+      const salary = Number(document.getElementById('empSalary').value) || 0;
+      const payDay = Math.min(31, Math.max(1, Number(document.getElementById('empPayDay').value) || 1));
+      const joinDate = document.getElementById('empJoinDate').value;
+      const status = document.getElementById('empStatus').value;
+
+      if (!name || !phone || !role) {
+        return showToast('Name, mobile and designation required', true);
+      }
+
+      const payload = {
+        name,
+        phone,
+        address,
+        role,
+        salary,
+        payDay,
+        joinDate,
+        status,
+        photoUrl: pendingEmpPhoto,
+        updatedAt: Date.now()
+      };
+
+      showLoader();
+      const req = editingEmployeeId
+        ? db.ref(`${PATHS.employees}/${editingEmployeeId}`).update(payload)
+        : db.ref(PATHS.employees).push({ ...payload, createdAt: Date.now() });
+
+      req.then(() => {
+        closeModal('employeeModal');
+        showToast(editingEmployeeId ? 'Employee updated' : 'Employee added');
+      }).catch(err => showToast(err.message, true))
+        .finally(() => hideLoader());
+    }
+
+    function deleteEmployee(empId) {
+      if (!confirm('Delete this employee?')) return;
+      showLoader();
+      db.ref(`${PATHS.employees}/${empId}`).remove()
+        .then(() => showToast('Employee removed'))
+        .finally(() => hideLoader());
+    }
+
+    function openPaySalaryModal(empId) {
+      const e = allEmployees[empId];
+      if (!e) return;
+      payingEmployeeId = empId;
+      document.getElementById('payEmpNameLabel').innerText = `${e.name} (${e.role || ''})`;
+      document.getElementById('payMonthInput').value = getCurrentMonthKey();
+      document.getElementById('payAmountInput').value = Number(e.salary) || 0;
+      document.getElementById('payDateInput').value = getTodayISO();
+      document.getElementById('payNoteInput').value = '';
+      openModal('paySalaryModal');
+    }
+
+    async function confirmSalaryPayment() {
+      if (!payingEmployeeId || !allEmployees[payingEmployeeId]) return;
+      const monthKey = document.getElementById('payMonthInput').value;
+      const amount = Number(document.getElementById('payAmountInput').value) || 0;
+      const paidDate = document.getElementById('payDateInput').value || getTodayISO();
+      const note = document.getElementById('payNoteInput').value.trim();
+
+      if (!monthKey || amount <= 0) return showToast('Valid month and amount required', true);
+
+      showLoader();
+      try {
+        await db.ref(PATHS.employeePayments).push({
+          employeeId: payingEmployeeId,
+          employeeName: allEmployees[payingEmployeeId].name,
+          monthKey,
+          amount,
+          paidDate,
+          note,
+          createdAt: Date.now()
+        });
+
+        if (monthKey === getCurrentMonthKey()) {
+          await db.ref(`${PATHS.employees}/${payingEmployeeId}`).update({ lastPaidMonth: monthKey });
+        }
+
+        closeModal('paySalaryModal');
+        showToast('Salary recorded');
+      } catch (err) {
+        showToast(err.message, true);
+      } finally {
+        hideLoader();
+      }
+    }
+
+    function openEmployeeDetail(empId) {
+      const e = allEmployees[empId];
+      if (!e) return;
+
+      const payments = Object.entries(allEmployeePayments)
+        .filter(([pid, p]) => p.employeeId === empId)
+        .sort((a, b) => (b[1].createdAt || 0) - (a[1].createdAt || 0));
+
+      const historyHtml = payments.length > 0
+        ? payments.map(([pid, p]) => `
+            <div class="flex items-center justify-between py-2.5 border-b border-zinc-100 last:border-0">
+              <div>
+                <span class="font-mono font-bold text-zinc-900">${escapeHtml(p.monthKey)}</span>
+                <span class="text-zinc-400 ml-2 font-mono text-[11px]">${escapeHtml(p.paidDate || '')}</span>
+                ${p.note ? `<p class="text-[11px] text-zinc-500 mt-0.5">${escapeHtml(p.note)}</p>` : ''}
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="font-mono font-bold text-emerald-700">BDT ${Number(p.amount).toLocaleString()}</span>
+                <button onclick="deleteSalaryRecord('${pid}', '${empId}')" class="text-[11px] font-semibold text-rose-600 hover:underline">Delete</button>
+              </div>
+            </div>
+          `).join('')
+        : `<div class="py-4 text-center text-zinc-400">No payments recorded</div>`;
+
+      document.getElementById('empDetailBody').innerHTML = `
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 rounded-xl bg-zinc-100 border border-zinc-200 overflow-hidden shrink-0 flex items-center justify-center font-extrabold text-lg text-zinc-700">
+            ${e.photoUrl ? `<img src="${e.photoUrl}" class="w-full h-full object-cover">` : escapeHtml((e.name || 'E').charAt(0).toUpperCase())}
+          </div>
+          <div class="min-w-0 flex-1">
+            <h4 class="text-base font-extrabold text-zinc-950">${escapeHtml(e.name)}</h4>
+            <p class="text-xs font-semibold text-zinc-500">${escapeHtml(e.role || '')}</p>
+            <p class="text-xs font-mono text-zinc-700 mt-0.5">${escapeHtml(e.phone || '')}</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 bg-zinc-50 border border-zinc-200 rounded-xl p-4">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-zinc-400 block">Salary</span>
+            <span class="font-mono font-extrabold text-zinc-950">BDT ${Number(e.salary || 0).toLocaleString()}</span>
+          </div>
+          <div>
+            <span class="text-[10px] uppercase font-bold text-zinc-400 block">Pay Day</span>
+            <span class="font-mono font-bold text-zinc-900">Day ${e.payDay || 1}</span>
+          </div>
+          <div>
+            <span class="text-[10px] uppercase font-bold text-zinc-400 block">Joining Date</span>
+            <span class="font-mono text-zinc-800">${escapeHtml(e.joinDate || 'N/A')}</span>
+          </div>
+          <div>
+            <span class="text-[10px] uppercase font-bold text-zinc-400 block">Status</span>
+            <span class="font-bold text-zinc-800">${escapeHtml(e.status || 'Active')}</span>
+          </div>
+          <div class="col-span-2 pt-2 border-t border-zinc-200">
+            <span class="text-[10px] uppercase font-bold text-zinc-400 block">Address</span>
+            <span class="text-zinc-800 font-medium">${escapeHtml(e.address || 'N/A')}</span>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-zinc-500">Salary History</span>
+            <button onclick="closeModal('empDetailModal'); openPaySalaryModal('${empId}')" class="px-3 py-1 bg-zinc-950 text-white rounded-lg font-bold text-[11px]">Pay Salary</button>
+          </div>
+          <div class="bg-white border border-zinc-200 rounded-xl px-4 py-1 max-h-56 overflow-y-auto custom-scroll">
+            ${historyHtml}
+          </div>
+        </div>
+      `;
+
+      openModal('empDetailModal');
+    }
+
+    async function deleteSalaryRecord(paymentId, empId) {
+      if (!confirm('Remove this salary record?')) return;
+      showLoader();
+      try {
+        await db.ref(`${PATHS.employeePayments}/${paymentId}`).remove();
+        const currentMonth = getCurrentMonthKey();
+        const stillPaid = Object.entries(allEmployeePayments).some(([k, p]) => k !== paymentId && p.employeeId === empId && p.monthKey === currentMonth);
+        if (!stillPaid) {
+          await db.ref(`${PATHS.employees}/${empId}`).update({ lastPaidMonth: null });
+        }
+        openEmployeeDetail(empId);
+        showToast('Record removed');
+      } finally {
+        hideLoader();
+      }
+    }
+
+    function renderEmployees() {
+      const grid = document.getElementById('employeesGrid');
+      if (!grid) return;
+
+      const entries = Object.entries(allEmployees);
+      const q = (document.getElementById('empSearchInput')?.value || '').toLowerCase().trim();
+      const filterStatus = document.getElementById('empFilterStatus')?.value || 'all';
+      const currentMonth = getCurrentMonthKey();
+
+      let activePayroll = 0;
+      let paidMonthTotal = 0;
+      let dueMonthTotal = 0;
+      const alertItems = [];
+
+      entries.forEach(([id, e]) => {
+        const sal = Number(e.salary) || 0;
+        const state = getEmployeeSalaryState(id, e);
+        if (state !== 'inactive') {
+          activePayroll += sal;
+          if (state === 'paid') paidMonthTotal += sal;
+          else dueMonthTotal += sal;
+        }
+        if (state === 'due' || state === 'upcoming') {
+          alertItems.push({ id, e, state });
+        }
+      });
+
+      document.getElementById('empStatTotal').innerText = entries.length;
+      document.getElementById('empStatPayroll').innerText = `BDT ${activePayroll.toLocaleString()}`;
+      document.getElementById('empStatPaid').innerText = `BDT ${paidMonthTotal.toLocaleString()}`;
+      document.getElementById('empStatDue').innerText = `BDT ${dueMonthTotal.toLocaleString()}`;
+
+      // Nav & Alert Banner
+      const dueNav = document.getElementById('dueNavCount');
+      const dueMob = document.getElementById('dueMobCount');
+      const alertBanner = document.getElementById('salaryAlertBanner');
+      const alertList = document.getElementById('salaryAlertList');
+      const alertTotal = document.getElementById('salaryAlertTotal');
+
+      if (alertItems.length > 0) {
+        dueNav.innerText = alertItems.length;
+        dueNav.classList.remove('hidden');
+        dueMob.innerText = alertItems.length;
+        dueMob.classList.remove('hidden');
+        alertBanner.classList.remove('hidden');
+
+        const alertSum = alertItems.reduce((acc, it) => acc + (Number(it.e.salary) || 0), 0);
+        alertTotal.innerText = `BDT ${alertSum.toLocaleString()}`;
+
+        alertList.innerHTML = alertItems.map(({ id, e, state }) => `
+          <div class="py-2.5 flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-extrabold text-zinc-950 truncate">${escapeHtml(e.name)}</span>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${state === 'due' ? 'bg-rose-100 text-rose-700' : 'bg-amber-100 text-amber-800'}">
+                  ${state === 'due' ? 'Due' : 'Upcoming'} (Day ${e.payDay || 1})
+                </span>
+              </div>
+              <span class="text-[11px] text-zinc-500 block">${escapeHtml(e.role || '')} • ${escapeHtml(e.phone || '')}</span>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+              <span class="text-xs font-mono font-bold text-zinc-950">BDT ${Number(e.salary || 0).toLocaleString()}</span>
+              <button onclick="openPaySalaryModal('${id}')" class="px-3 py-1.5 bg-zinc-950 hover:bg-zinc-800 text-white rounded-lg text-[11px] font-bold transition">Pay</button>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        dueNav.classList.add('hidden');
+        dueMob.classList.add('hidden');
+        alertBanner.classList.add('hidden');
+      }
+
+      const filtered = entries.filter(([id, e]) => {
+        const state = getEmployeeSalaryState(id, e);
+        if (filterStatus === 'due' && state !== 'due' && state !== 'upcoming' && state !== 'scheduled') return false;
+        if (filterStatus === 'paid' && state !== 'paid') return false;
+        if (filterStatus === 'inactive' && state !== 'inactive') return false;
+        if (q) {
+          const hay = `${e.name || ''} ${e.phone || ''} ${e.role || ''} ${e.address || ''}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full bg-white border border-zinc-200 rounded-2xl p-10 text-center text-xs text-zinc-400">No employees found</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(([id, e]) => {
+        const state = getEmployeeSalaryState(id, e);
+        let badge = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600">Day ${e.payDay || 1}</span>`;
+        if (state === 'paid') badge = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Paid</span>`;
+        else if (state === 'due') badge = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">Due</span>`;
+        else if (state === 'upcoming') badge = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">Upcoming</span>`;
+        else if (state === 'inactive') badge = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-400">Inactive</span>`;
+
+        return `
+          <div class="bg-white border border-zinc-200 hover:border-zinc-900 rounded-2xl p-4 flex flex-col justify-between gap-4 transition">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-12 h-12 rounded-xl bg-zinc-100 border border-zinc-200 overflow-hidden shrink-0 flex items-center justify-center font-extrabold text-sm text-zinc-700">
+                  ${e.photoUrl ? `<img src="${e.photoUrl}" class="w-full h-full object-cover">` : escapeHtml((e.name || 'E').charAt(0).toUpperCase())}
+                </div>
+                <div class="min-w-0">
+                  <h4 class="text-sm font-extrabold text-zinc-950 truncate">${escapeHtml(e.name)}</h4>
+                  <span class="text-xs font-medium text-zinc-500 block truncate">${escapeHtml(e.role || '')}</span>
+                  <span class="text-[11px] font-mono text-zinc-600 block mt-0.5">${escapeHtml(e.phone || '')}</span>
+                </div>
+              </div>
+              ${badge}
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 pt-3 border-t border-zinc-100 text-xs">
+              <div>
+                <span class="text-[10px] text-zinc-400 font-bold uppercase block">Salary</span>
+                <span class="font-mono font-extrabold text-zinc-950">BDT ${Number(e.salary || 0).toLocaleString()}</span>
+              </div>
+              <div>
+                <span class="text-[10px] text-zinc-400 font-bold uppercase block">Pay Date</span>
+                <span class="font-mono font-bold text-zinc-700">${e.payDay || 1} / Month</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 pt-2 border-t border-zinc-100 text-xs">
+              <div class="flex items-center gap-1.5">
+                <button onclick="openEmployeeDetail('${id}')" class="px-2.5 py-1.5 rounded-lg border border-zinc-200 hover:border-zinc-900 font-semibold text-zinc-800 transition">Biodata</button>
+                <button onclick="openPaySalaryModal('${id}')" class="px-2.5 py-1.5 rounded-lg bg-zinc-950 hover:bg-zinc-800 text-white font-bold transition">${isEmployeePaidForMonth(id, currentMonth) ? 'Pay Again' : 'Pay'}</button>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button onclick="openEmployeeModal('${id}')" class="px-2 py-1.5 rounded-lg text-zinc-500 hover:text-zinc-950 font-semibold">Edit</button>
+                <button onclick="deleteEmployee('${id}')" class="px-2 py-1.5 rounded-lg text-rose-600 hover:bg-rose-50 font-semibold">Delete</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ==================== MODULE 2: SUPPLIERS & LEDGER ====================
+    async function uploadSupplierPhoto(input) {
+      const file = input.files[0];
+      if (!file) return;
+      showLoader();
+      try {
+        pendingSupPhoto = await uploadToCloudinary(file);
+        renderSupPhotoPreview();
+        showToast('Image uploaded');
+      } catch (e) {
+        showToast('Upload failed', true);
+      } finally {
+        hideLoader();
+        input.value = '';
+      }
+    }
+
+    function clearSupplierPhoto() {
+      pendingSupPhoto = '';
+      renderSupPhotoPreview();
+    }
+
+    function renderSupPhotoPreview() {
+      const box = document.getElementById('supPhotoPreview');
+      const btn = document.getElementById('supRemovePhotoBtn');
+      if (pendingSupPhoto) {
+        box.innerHTML = `<img src="${pendingSupPhoto}" class="w-full h-full object-cover">`;
+        btn.classList.remove('hidden');
+      } else {
+        const nm = (document.getElementById('supNameInput').value || 'S').trim();
+        box.innerHTML = nm.charAt(0).toUpperCase();
+        btn.classList.add('hidden');
+      }
+    }
+
+    function openSupplierModal(supId = null) {
+      editingSupplierId = supId;
+      const title = document.getElementById('supModalTitle');
+
+      if (supId && allSuppliers[supId]) {
+        const s = allSuppliers[supId];
+        title.innerText = 'Edit Supplier';
+        document.getElementById('supNameInput').value = s.name || '';
+        document.getElementById('supPhoneInput').value = s.phone || '';
+        document.getElementById('supAddressInput').value = s.address || '';
+        pendingSupPhoto = s.imageUrl || '';
+      } else {
+        title.innerText = 'Add Supplier';
+        document.getElementById('supNameInput').value = '';
+        document.getElementById('supPhoneInput').value = '';
+        document.getElementById('supAddressInput').value = '';
+        pendingSupPhoto = '';
+      }
+
+      renderSupPhotoPreview();
+      openModal('supplierModal');
+    }
+
+    function saveSupplier() {
+      const name = document.getElementById('supNameInput').value.trim();
+      const phone = document.getElementById('supPhoneInput').value.trim();
+      const address = document.getElementById('supAddressInput').value.trim();
+
+      if (!name) return showToast('Supplier name required', true);
+
+      const payload = {
+        name,
+        phone,
+        address,
+        imageUrl: pendingSupPhoto,
+        updatedAt: Date.now()
+      };
+
+      showLoader();
+      const req = editingSupplierId
+        ? db.ref(`${PATHS.suppliers}/${editingSupplierId}`).update(payload)
+        : db.ref(PATHS.suppliers).push({ ...payload, createdAt: Date.now() });
+
+      req.then(() => {
+        closeModal('supplierModal');
+        showToast(editingSupplierId ? 'Supplier updated' : 'Supplier added');
+      }).catch(err => showToast(err.message, true))
+        .finally(() => hideLoader());
+    }
+
+    function getSupplierStats(supId, monthFilter = null) {
+      let qty = 0;
+      let totalPurchase = 0;
+      let totalPaid = 0;
+
+      Object.values(allSupplierEntries).forEach(entry => {
+        if (entry.supplierId !== supId) return;
+        if (monthFilter && (!entry.date || !entry.date.startsWith(monthFilter))) return;
+
+        if (entry.type === 'supply') {
+          qty += Number(entry.quantity) || 0;
+          totalPurchase += Number(entry.totalAmount) || 0;
+          totalPaid += Number(entry.paidAmount) || 0;
+        } else if (entry.type === 'payment') {
+          totalPaid += Number(entry.paidAmount) || 0;
+        }
+      });
+
+      return {
+        qty,
+        totalPurchase,
+        totalPaid,
+        due: totalPurchase - totalPaid
+      };
+    }
+
+    function renderSuppliersList() {
+      const grid = document.getElementById('suppliersGrid');
+      if (!grid) return;
+
+      const q = (document.getElementById('supSearchInput')?.value || '').toLowerCase().trim();
+      const entries = Object.entries(allSuppliers);
+      const currentMonth = getCurrentMonthKey();
+
+      let grandPurchase = 0;
+      let grandPaid = 0;
+
+      entries.forEach(([id]) => {
+        const st = getSupplierStats(id, null);
+        grandPurchase += st.totalPurchase;
+        grandPaid += st.totalPaid;
+      });
+
+      document.getElementById('supStatCount').innerText = entries.length;
+      document.getElementById('supStatPurchase').innerText = `BDT ${grandPurchase.toLocaleString()}`;
+      document.getElementById('supStatPaid').innerText = `BDT ${grandPaid.toLocaleString()}`;
+      document.getElementById('supStatDue').innerText = `BDT ${(grandPurchase - grandPaid).toLocaleString()}`;
+
+      const filtered = entries.filter(([id, s]) => {
+        if (!q) return true;
+        return `${s.name || ''} ${s.phone || ''} ${s.address || ''}`.toLowerCase().includes(q);
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full bg-white border border-zinc-200 rounded-2xl p-10 text-center text-xs text-zinc-400">No suppliers found</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(([id, s]) => {
+        const allStats = getSupplierStats(id, null);
+        const monthStats = getSupplierStats(id, currentMonth);
+
+        return `
+          <div onclick="openSupplierDetail('${id}')" class="cursor-pointer bg-white border border-zinc-200 hover:border-zinc-950 rounded-2xl p-4 space-y-4 transition">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-11 h-11 rounded-xl bg-zinc-100 border border-zinc-200 overflow-hidden shrink-0 flex items-center justify-center font-extrabold text-sm text-zinc-700">
+                  ${s.imageUrl ? `<img src="${s.imageUrl}" class="w-full h-full object-cover">` : escapeHtml((s.name || 'S').charAt(0).toUpperCase())}
+                </div>
+                <div class="min-w-0">
+                  <h4 class="text-sm font-extrabold text-zinc-950 truncate">${escapeHtml(s.name)}</h4>
+                  <span class="text-xs font-mono text-zinc-500 block truncate">${escapeHtml(s.phone || s.address || '')}</span>
+                </div>
+              </div>
+              <span class="text-[11px] font-bold text-zinc-400">Open</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 pt-3 border-t border-zinc-100 text-xs">
+              <div>
+                <span class="text-[10px] text-zinc-400 font-bold uppercase block">This Month</span>
+                <span class="font-mono font-bold text-zinc-900">${monthStats.qty} pcs</span>
+              </div>
+              <div>
+                <span class="text-[10px] text-zinc-400 font-bold uppercase block">Total Paid</span>
+                <span class="font-mono font-bold text-emerald-700">${allStats.totalPaid.toLocaleString()}</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] text-zinc-400 font-bold uppercase block">Payable</span>
+                <span class="font-mono font-extrabold ${allStats.due > 0 ? 'text-rose-600' : 'text-zinc-900'}">${allStats.due.toLocaleString()}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openSupplierDetail(supId) {
+      activeSupplierId = supId;
+      document.getElementById('suppliersListView').classList.add('hidden');
+      document.getElementById('supplierDetailView').classList.remove('hidden');
+      document.getElementById('supCustomMonth').value = getCurrentMonthKey();
+      renderSupplierDetail();
+    }
+
+    function closeSupplierDetail() {
+      activeSupplierId = null;
+      document.getElementById('supplierDetailView').classList.add('hidden');
+      document.getElementById('suppliersListView').classList.remove('hidden');
+    }
+
+    function editCurrentSupplier() {
+      if (activeSupplierId) openSupplierModal(activeSupplierId);
+    }
+
+    async function deleteCurrentSupplier() {
+      if (!activeSupplierId) return;
+      if (!confirm('Delete this supplier and all ledger records?')) return;
+
+      showLoader();
+      try {
+        const updates = {};
+        updates[`${PATHS.suppliers}/${activeSupplierId}`] = null;
+        Object.entries(allSupplierEntries).forEach(([eid, e]) => {
+          if (e.supplierId === activeSupplierId) {
+            updates[`${PATHS.supplierEntries}/${eid}`] = null;
+          }
+        });
+        await db.ref().update(updates);
+        closeSupplierDetail();
+        showToast('Supplier deleted');
+      } finally {
+        hideLoader();
+      }
+    }
+
+    function renderSupplierDetail() {
+      if (!activeSupplierId || !allSuppliers[activeSupplierId]) return;
+      const s = allSuppliers[activeSupplierId];
+
+      const imgWrap = document.getElementById('supDetailImgWrap');
+      imgWrap.innerHTML = s.imageUrl
+        ? `<img src="${s.imageUrl}" class="w-full h-full object-cover">`
+        : escapeHtml((s.name || 'S').charAt(0).toUpperCase());
+
+      document.getElementById('supDetailName').innerText = s.name || '';
+      document.getElementById('supDetailMeta').innerText = [s.phone, s.address].filter(Boolean).join(' • ');
+
+      const mode = document.getElementById('supMonthMode').value;
+      const customMonthInp = document.getElementById('supCustomMonth');
+      customMonthInp.classList.toggle('hidden', mode !== 'custom');
+
+      let monthFilter = null;
+      if (mode === 'month') monthFilter = getCurrentMonthKey();
+      else if (mode === 'custom') monthFilter = customMonthInp.value || getCurrentMonthKey();
+
+      const allTimeStats = getSupplierStats(activeSupplierId, null);
+      const periodStats = getSupplierStats(activeSupplierId, monthFilter);
+
+      document.getElementById('supDetailAllTimeDue').innerText = `BDT ${allTimeStats.due.toLocaleString()}`;
+      document.getElementById('supDetailQty').innerText = periodStats.qty.toLocaleString();
+      document.getElementById('supDetailTotal').innerText = `BDT ${periodStats.totalPurchase.toLocaleString()}`;
+      document.getElementById('supDetailPaid').innerText = `BDT ${periodStats.totalPaid.toLocaleString()}`;
+      document.getElementById('supDetailPeriodDue').innerText = `BDT ${periodStats.due.toLocaleString()}`;
+
+      const rows = Object.entries(allSupplierEntries)
+        .filter(([eid, e]) => e.supplierId === activeSupplierId && (!monthFilter || (e.date && e.date.startsWith(monthFilter))))
+        .sort((a, b) => (b[1].date || '').localeCompare(a[1].date || '') || (b[1].createdAt || 0) - (a[1].createdAt || 0));
+
+      const tbody = document.getElementById('supLedgerTableBody');
+      if (rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-zinc-400">No records found</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = rows.map(([eid, e]) => {
+        const isSupply = e.type === 'supply';
+        const total = isSupply ? (Number(e.totalAmount) || 0) : 0;
+        const paid = Number(e.paidAmount) || 0;
+        const rowDue = isSupply ? (total - paid) : -paid;
+
+        return `
+          <tr class="hover:bg-zinc-50">
+            <td class="p-3.5 pl-4 font-mono text-zinc-600 whitespace-nowrap">${escapeHtml(e.date || '')}</td>
+            <td class="p-3.5">
+              <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${isSupply ? 'bg-zinc-100 text-zinc-800' : 'bg-emerald-50 text-emerald-700'}">
+                ${isSupply ? 'Supply' : 'Payment'}
+              </span>
+            </td>
+            <td class="p-3.5">
+              <span class="font-bold text-zinc-900 block">${escapeHtml(e.itemName || (isSupply ? 'Supply' : 'Due Payment'))}</span>
+              ${e.note ? `<span class="text-[11px] text-zinc-400">${escapeHtml(e.note)}</span>` : ''}
+            </td>
+            <td class="p-3.5 text-center font-mono">${isSupply ? `${e.quantity || 0}` : '-'}</td>
+            <td class="p-3.5 text-right font-mono">${isSupply ? total.toLocaleString() : '-'}</td>
+            <td class="p-3.5 text-right font-mono text-emerald-700 font-bold">${paid.toLocaleString()}</td>
+            <td class="p-3.5 text-right font-mono font-bold ${rowDue > 0 ? 'text-rose-600' : 'text-zinc-600'}">
+              ${isSupply ? rowDue.toLocaleString() : `-${paid.toLocaleString()}`}
+            </td>
+            <td class="p-3.5 text-right pr-4 whitespace-nowrap">
+              ${isSupply ? `<button onclick="openSupplyEntryModal('${eid}')" class="text-zinc-500 hover:text-zinc-950 font-semibold mr-2">Edit</button>` : ''}
+              <button onclick="deleteSupplierEntry('${eid}')" class="text-rose-600 hover:underline font-semibold">Delete</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function populateSupplyProductSelect(selectedId = '') {
+      const sel = document.getElementById('supEntryProductSelect');
+      if (!sel) return;
+      sel.innerHTML = '<option value="">None</option>';
+      Object.entries(allProducts).forEach(([pid, p]) => {
+        sel.innerHTML += `<option value="${pid}" ${pid === selectedId ? 'selected' : ''}>${escapeHtml(p.name)} (Stock: ${p.stock || 0})</option>`;
+      });
+    }
+
+    function onSupplyProductSelect() {
+      const pid = document.getElementById('supEntryProductSelect').value;
+      const syncWrap = document.getElementById('supSyncStockWrap');
+      const itemInp = document.getElementById('supEntryItemName');
+
+      if (pid && allProducts[pid]) {
+        if (!itemInp.value.trim()) itemInp.value = allProducts[pid].name || '';
+        if (!editingSupplyEntryId) syncWrap.classList.remove('hidden');
+      } else {
+        syncWrap.classList.add('hidden');
+      }
+    }
+
+    function calcSupplyTotal() {
+      const qty = Number(document.getElementById('supEntryQty').value) || 0;
+      const unit = Number(document.getElementById('supEntryUnitPrice').value) || 0;
+      if (qty > 0 && unit > 0) {
+        document.getElementById('supEntryTotal').value = Math.round(qty * unit);
+      }
+      calcSupplyDuePreview();
+    }
+
+    function calcSupplyDuePreview() {
+      const total = Number(document.getElementById('supEntryTotal').value) || 0;
+      const paid = Number(document.getElementById('supEntryPaid').value) || 0;
+      document.getElementById('supEntryDuePreview').innerText = `BDT ${(total - paid).toLocaleString()}`;
+    }
+
+    function openSupplyEntryModal(entryId = null) {
+      editingSupplyEntryId = entryId;
+      const title = document.getElementById('supplyEntryTitle');
+      const syncWrap = document.getElementById('supSyncStockWrap');
+
+      if (entryId && allSupplierEntries[entryId]) {
+        const e = allSupplierEntries[entryId];
+        title.innerText = 'Edit Supply';
+        document.getElementById('supEntryDate').value = e.date || getTodayISO();
+        populateSupplyProductSelect(e.productId || '');
+        document.getElementById('supEntryItemName').value = e.itemName || '';
+        document.getElementById('supEntryQty').value = e.quantity || '';
+        document.getElementById('supEntryUnitPrice').value = e.unitPrice || '';
+        document.getElementById('supEntryTotal').value = e.totalAmount || '';
+        document.getElementById('supEntryPaid').value = e.paidAmount || '';
+        document.getElementById('supEntryNote').value = e.note || '';
+        syncWrap.classList.add('hidden');
+      } else {
+        title.innerText = 'Add Supply';
+        document.getElementById('supEntryDate').value = getTodayISO();
+        populateSupplyProductSelect('');
+        document.getElementById('supEntryItemName').value = '';
+        document.getElementById('supEntryQty').value = '';
+        document.getElementById('supEntryUnitPrice').value = '';
+        document.getElementById('supEntryTotal').value = '';
+        document.getElementById('supEntryPaid').value = '';
+        document.getElementById('supEntryNote').value = '';
+        document.getElementById('supSyncStockCb').checked = true;
+        syncWrap.classList.add('hidden');
+      }
+
+      calcSupplyDuePreview();
+      openModal('supplyEntryModal');
+    }
+
+    async function saveSupplyEntry() {
+      if (!activeSupplierId) return;
+      const date = document.getElementById('supEntryDate').value || getTodayISO();
+      const productId = document.getElementById('supEntryProductSelect').value;
+      const itemName = document.getElementById('supEntryItemName').value.trim();
+      const quantity = Number(document.getElementById('supEntryQty').value) || 0;
+      const unitPrice = Number(document.getElementById('supEntryUnitPrice').value) || 0;
+      const totalAmount = Number(document.getElementById('supEntryTotal').value) || 0;
+      const paidAmount = Number(document.getElementById('supEntryPaid').value) || 0;
+      const note = document.getElementById('supEntryNote').value.trim();
+      const syncStock = !editingSupplyEntryId && productId && document.getElementById('supSyncStockCb').checked;
+
+      if (!itemName || quantity <= 0) return showToast('Item name and quantity required', true);
+
+      const payload = {
+        supplierId: activeSupplierId,
+        type: 'supply',
+        date,
+        productId: productId || null,
+        itemName,
+        quantity,
+        unitPrice,
+        totalAmount,
+        paidAmount,
+        note,
+        updatedAt: Date.now()
+      };
+
+      showLoader();
+      try {
+        if (editingSupplyEntryId) {
+          await db.ref(`${PATHS.supplierEntries}/${editingSupplyEntryId}`).update(payload);
+        } else {
+          await db.ref(PATHS.supplierEntries).push({ ...payload, createdAt: Date.now() });
+          if (syncStock && allProducts[productId]) {
+            const curStock = Number(allProducts[productId].stock) || 0;
+            await db.ref(`${PATHS.products}/${productId}`).update({ stock: curStock + quantity });
+          }
+        }
+        closeModal('supplyEntryModal');
+        showToast('Supply recorded');
+      } catch (err) {
+        showToast(err.message, true);
+      } finally {
+        hideLoader();
+      }
+    }
+
+    function openSupplierPaymentModal() {
+      document.getElementById('supPayDate').value = getTodayISO();
+      document.getElementById('supPayAmount').value = '';
+      document.getElementById('supPayNote').value = '';
+      openModal('supplierPayModal');
+    }
+
+    async function saveSupplierPayment() {
+      if (!activeSupplierId) return;
+      const date = document.getElementById('supPayDate').value || getTodayISO();
+      const paidAmount = Number(document.getElementById('supPayAmount').value) || 0;
+      const note = document.getElementById('supPayNote').value.trim();
+
+      if (paidAmount <= 0) return showToast('Valid amount required', true);
+
+      showLoader();
+      try {
+        await db.ref(PATHS.supplierEntries).push({
+          supplierId: activeSupplierId,
+          type: 'payment',
+          date,
+          itemName: 'Due Payment',
+          paidAmount,
+          note,
+          createdAt: Date.now()
+        });
+        closeModal('supplierPayModal');
+        showToast('Payment recorded');
+      } catch (err) {
+        showToast(err.message, true);
+      } finally {
+        hideLoader();
+      }
+    }
+
+    function deleteSupplierEntry(entryId) {
+      if (!confirm('Delete this ledger record?')) return;
+      showLoader();
+      db.ref(`${PATHS.supplierEntries}/${entryId}`).remove()
+        .then(() => showToast('Record deleted'))
+        .finally(() => hideLoader());
+    }
+
+    // ==================== MODULE 3: STOCK MANAGEMENT ====================
+    function selectStockCategory(cat) {
+      selectedStockCategory = cat;
+      renderStockList();
+    }
+
+    async function adjustTotalStock(prodId, delta) {
+      const p = allProducts[prodId];
+      if (!p) return;
+      const cur = Number(p.stock) || 0;
+      const next = Math.max(0, cur + delta);
+      await db.ref(`${PATHS.products}/${prodId}`).update({ stock: next });
+      showToast(`${p.name}: ${next}`);
+    }
+
+    async function setExactTotalStock(prodId, value) {
+      const p = allProducts[prodId];
+      if (!p) return;
+      const next = Math.max(0, Number(value) || 0);
+      await db.ref(`${PATHS.products}/${prodId}`).update({ stock: next });
+      showToast(`${p.name}: ${next}`);
+    }
+
+    async function adjustSizeStock(prodId, sizeKey, delta) {
+      const p = allProducts[prodId];
+      if (!p) return;
+      const sizeMap = { ...(p.sizeStock || {}) };
+      const cur = Number(sizeMap[sizeKey]) || 0;
+      sizeMap[sizeKey] = Math.max(0, cur + delta);
+
+      const newTotal = Object.values(sizeMap).reduce((sum, v) => sum + (Number(v) || 0), 0);
+      await db.ref(`${PATHS.products}/${prodId}`).update({
+        sizeStock: sizeMap,
+        stock: newTotal
+      });
+      showToast(`${p.name} (${sizeKey}): ${sizeMap[sizeKey]}`);
+    }
+
+    async function setExactSizeStock(prodId, sizeKey, value) {
+      const p = allProducts[prodId];
+      if (!p) return;
+      const sizeMap = { ...(p.sizeStock || {}) };
+      sizeMap[sizeKey] = Math.max(0, Number(value) || 0);
+
+      const newTotal = Object.values(sizeMap).reduce((sum, v) => sum + (Number(v) || 0), 0);
+      await db.ref(`${PATHS.products}/${prodId}`).update({
+        sizeStock: sizeMap,
+        stock: newTotal
+      });
+      showToast(`${p.name} (${sizeKey}): ${sizeMap[sizeKey]}`);
+    }
+
+    function renderStockList() {
+      const pills = document.getElementById('stockCategoryPills');
+      const container = document.getElementById('stockListContainer');
+      if (!pills || !container) return;
+
+      const prodEntries = Object.entries(allProducts);
+      const catCounts = { All: { items: prodEntries.length, units: 0 } };
+
+      Object.values(allCategories).forEach(c => {
+        if (c && c.name) {
+          catCounts[c.name.trim()] = { items: 0, units: 0 };
+        }
+      });
+
+      let totalUnits = 0;
+      let lowStockCount = 0;
+
+      prodEntries.forEach(([id, p]) => {
+        const stk = Number(p.stock) || 0;
+        totalUnits += stk;
+        if (stk <= 5) lowStockCount++;
+
+        catCounts.All.units += stk;
+        const pCat = (p.category || '').trim() || 'Uncategorized';
+        if (!catCounts[pCat]) catCounts[pCat] = { items: 0, units: 0 };
+        catCounts[pCat].items++;
+        catCounts[pCat].units += stk;
+      });
+
+      document.getElementById('stkStatProducts').innerText = prodEntries.length;
+      document.getElementById('stkStatUnits').innerText = totalUnits.toLocaleString();
+      document.getElementById('stkStatCategories').innerText = Object.keys(catCounts).length - 1;
+      document.getElementById('stkStatLow').innerText = lowStockCount;
+
+      pills.innerHTML = Object.entries(catCounts).map(([catName, info]) => {
+        if (catName === 'Uncategorized' && info.items === 0) return '';
+        const isOn = selectedStockCategory === catName;
+        const encoded = encodeURIComponent(catName);
+        return `
+          <button onclick="selectStockCategory(decodeURIComponent('${encoded}'))" class="h-8 px-3 rounded-lg text-xs font-bold whitespace-nowrap transition border ${
+            isOn ? 'bg-zinc-950 text-white border-zinc-950' : 'bg-white text-zinc-700 border-zinc-200 hover:border-zinc-900'
+          }">
+            ${escapeHtml(catName)} <span class="font-mono text-[10px] opacity-75 ml-1">(${info.units})</span>
+          </button>
+        `;
+      }).join('');
+
+      const q = (document.getElementById('stockSearchInput')?.value || '').toLowerCase().trim();
+      const lowOnly = document.getElementById('stockLowOnlyCb')?.checked || false;
+
+      const filtered = prodEntries.filter(([id, p]) => {
+        const pCat = (p.category || '').trim() || 'Uncategorized';
+        if (selectedStockCategory !== 'All' && pCat !== selectedStockCategory) return false;
+        if (lowOnly && (Number(p.stock) || 0) > 5) return false;
+        if (q && !(p.name || '').toLowerCase().includes(q) && !pCat.toLowerCase().includes(q)) return false;
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="bg-white border border-zinc-200 rounded-2xl p-10 text-center text-xs text-zinc-400">No products found</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(([id, p]) => {
+        const stk = Number(p.stock) || 0;
+        const hasSizes = p.sizeStock && Object.keys(p.sizeStock).length > 0;
+
+        let controlsHtml = '';
+        if (hasSizes) {
+          controlsHtml = `
+            <div class="flex flex-wrap gap-2 pt-3 border-t border-zinc-100">
+              ${Object.entries(p.sizeStock).map(([sz, qty]) => {
+                const encSz = encodeURIComponent(sz);
+                return `
+                  <div class="flex items-center gap-1.5 bg-zinc-50 border border-zinc-200 rounded-xl px-2.5 py-1.5">
+                    <span class="text-[11px] font-mono font-extrabold text-zinc-900 mr-1">${escapeHtml(sz)}</span>
+                    <button onclick="adjustSizeStock('${id}', decodeURIComponent('${encSz}'), -1)" class="w-6 h-6 rounded-md bg-white border border-zinc-200 hover:border-zinc-950 font-bold text-xs flex items-center justify-center">-</button>
+                    <input type="number" min="0" value="${Number(qty) || 0}" onchange="setExactSizeStock('${id}', decodeURIComponent('${encSz}'), this.value)" class="w-12 h-6 bg-white border border-zinc-200 rounded-md text-center font-mono font-bold text-xs outline-none">
+                    <button onclick="adjustSizeStock('${id}', decodeURIComponent('${encSz}'), 1)" class="w-6 h-6 rounded-md bg-white border border-zinc-200 hover:border-zinc-950 font-bold text-xs flex items-center justify-center">+</button>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `;
+        } else {
+          controlsHtml = `
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="adjustTotalStock('${id}', -5)" class="h-8 px-2.5 rounded-lg border border-zinc-200 hover:border-zinc-950 bg-white text-xs font-mono font-bold">-5</button>
+              <button onclick="adjustTotalStock('${id}', -1)" class="w-8 h-8 rounded-lg border border-zinc-200 hover:border-zinc-950 bg-white text-xs font-bold">-</button>
+              <input type="number" min="0" value="${stk}" onchange="setExactTotalStock('${id}', this.value)" class="w-16 h-8 bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-zinc-950 rounded-lg text-center font-mono font-extrabold text-xs outline-none">
+              <button onclick="adjustTotalStock('${id}', 1)" class="w-8 h-8 rounded-lg border border-zinc-200 hover:border-zinc-950 bg-white text-xs font-bold">+</button>
+              <button onclick="adjustTotalStock('${id}', 5)" class="h-8 px-2.5 rounded-lg border border-zinc-200 hover:border-zinc-950 bg-white text-xs font-mono font-bold">+5</button>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="bg-white border border-zinc-200 rounded-2xl p-4 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-12 h-12 rounded-xl bg-zinc-100 border border-zinc-200 overflow-hidden shrink-0">
+                  ${p.imageUrl ? `<img src="${p.imageUrl}" class="w-full h-full object-cover">` : ''}
+                </div>
+                <div class="min-w-0">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 block">${escapeHtml(p.category || 'Uncategorized')}</span>
+                  <h4 class="text-sm font-extrabold text-zinc-950 truncate">${escapeHtml(p.name)}</h4>
+                  <span class="text-xs font-mono text-zinc-600">BDT ${Number(p.discountPrice || p.regularPrice || 0).toLocaleString()}</span>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between sm:justify-end gap-4">
+                <div class="text-left sm:text-right">
+                  <span class="text-[10px] font-bold uppercase text-zinc-400 block">Total Stock</span>
+                  <span class="text-base font-mono font-extrabold ${stk <= 5 ? 'text-rose-600' : 'text-zinc-950'}">${stk} pcs</span>
+                </div>
+                ${!hasSizes ? controlsHtml : ''}
+              </div>
+            </div>
+            ${hasSizes ? controlsHtml : ''}
+          </div>
+        `;
+      }).join('');
+    }
+  </script>
+</body>
+</html>
